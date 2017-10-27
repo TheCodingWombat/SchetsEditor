@@ -8,6 +8,8 @@ namespace SchetsEditor
         [STAThread]
         static void Main()
         {
+
+            //Comment to test version control
             Application.Run(new Hoofdscherm());
         }
     }
