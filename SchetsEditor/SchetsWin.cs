@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Resources;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Collections;
 
 namespace SchetsEditor
 {
@@ -25,6 +26,8 @@ namespace SchetsEditor
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
                                  );
+
+        ArrayList tekenElementen = new ArrayList();
 
         private void veranderAfmeting(object o, EventArgs ea)
         {
