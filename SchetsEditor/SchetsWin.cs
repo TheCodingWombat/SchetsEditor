@@ -44,7 +44,8 @@ namespace SchetsEditor
         }
         private bool vraagafsluiten() //NEW
         {
-            DialogResult antwoord = MessageBox.Show("Weet u het zeker? \nEr zijn onopgeslagen wijzigingen aangebracht!", "Zeker weten?", MessageBoxButtons.OKCancel);
+            DialogResult antwoord = MessageBox.Show("Weet u het zeker? \nEr zijn onopgeslagen wijzigingen aangebracht!", 
+                "Zeker weten?", MessageBoxButtons.OKCancel);
             if (antwoord == DialogResult.OK) { return true; }else { return false; }  
         }
         public void afsluiten(object sender, EventArgs e) // NEW
