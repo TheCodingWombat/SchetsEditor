@@ -1,7 +1,0 @@
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\bin\Debug\SchetsEditor.exe
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\bin\Debug\SchetsEditor.pdb
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.Properties.Resources.resources
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.GenerateResource.Cache
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.CoreCompileInputs.cache
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.exe
-C:\Users\richa\source\repos\SchetsEditor\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.pdb

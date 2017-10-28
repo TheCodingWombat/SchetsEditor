@@ -6,7 +6,8 @@ namespace SchetsEditor
 {
     public class Schets
     {
-        private Bitmap bitmap;
+        Bitmap bitmap;      //Nu public en static!
+        private bool changed;        //New!
         
         public Schets()
         {
@@ -15,6 +16,15 @@ namespace SchetsEditor
         public Graphics BitmapGraphics
         {
             get { return Graphics.FromImage(bitmap); }
+        }
+        public bool Changed         //New!
+        {
+            get { return changed; }
+        }
+        public Bitmap Bitmap
+        {
+            get { return bitmap; }
+            set { bitmap = value; }
         }
         public void VeranderAfmeting(Size sz)
         {
@@ -28,19 +38,24 @@ namespace SchetsEditor
                 gr.DrawImage(bitmap, 0, 0);
                 bitmap = nieuw;
             }
+            changed = true; //New!
         }
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
+            changed = true; //New!
+            //Console.WriteLine("Teken in schets.cs, changed:"+changed);
         }
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            changed = true; //New!
         }
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            changed = true; //New!
         }
     }
 }

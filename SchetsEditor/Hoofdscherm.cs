@@ -7,6 +7,7 @@ namespace SchetsEditor
     public class Hoofdscherm : Form
     {
         MenuStrip menuStrip;
+        SchetsWin s; //New!
 
         public Hoofdscherm()
         {   this.ClientSize = new Size(800, 600);
@@ -22,6 +23,7 @@ namespace SchetsEditor
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
+            menu.DropDownItems.Add("Openen..", null, this.open);  //New!
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
@@ -40,12 +42,27 @@ namespace SchetsEditor
         }
 
         private void nieuw(object sender, EventArgs e)
-        {   SchetsWin s = new SchetsWin();
+        {   s = new SchetsWin();                //Er stond: SchetsWin s = new SchetsWin(); !
             s.MdiParent = this;
             s.Show();
         }
-        private void afsluiten(object sender, EventArgs e)
-        {   this.Close();
+        private void afsluiten(object sender, EventArgs e) 
+        {
+            this.Close(); s = null; //Er stond alleen close!
+        }
+        private void open(object obj, EventArgs ea)     //New!
+        {
+            OpenFileDialog dialoog = new OpenFileDialog();
+            dialoog.Filter = "Foto's|*.png;*.jpg;*.bmp|Alle files|*.*";
+            dialoog.Title = "Openen ...";
+            if (dialoog.ShowDialog() == DialogResult.OK)
+            {
+                if(s != null) s.afsluiten(obj, ea);
+                nieuw(obj, ea);
+                s.schets.Bitmap = new Bitmap(dialoog.FileName);
+                s.Bestandsnaam = dialoog.FileName;
+                s.OpslagFormaat = dialoog.FilterIndex;
+            }
         }
     }
 }
