@@ -2,11 +2,24 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
+
+        private ArrayList tekenElementen = new ArrayList();
+
+        public ArrayList TekenElementen
+        {
+            get
+            {
+                Console.WriteLine(tekenElementen.Count);
+                return tekenElementen;
+            }
+            set { tekenElementen = value; }
+        }
 
         public Color PenKleur
         { get { return penkleur; }
@@ -36,6 +49,20 @@ namespace SchetsEditor
             g.SmoothingMode = SmoothingMode.AntiAlias;
             return g;
         }
+
+        public void TekenBitmapOpnieuw()
+        {
+            Console.WriteLine("tesdft");
+            schets.Schoon();
+            this.Invalidate();
+            foreach (TekenElement e in tekenElementen)
+            {
+                Console.WriteLine("Redrawing element" + e.tool.ToString());
+                (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
+            }
+            
+        }
+
         public void Schoon(object o, EventArgs ea)
         {   schets.Schoon();
             this.Invalidate();

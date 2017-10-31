@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -10,21 +11,26 @@ namespace SchetsEditor
         void MuisDrag(SchetsControl s, Point p);
         void MuisLos(SchetsControl s, Point p);
         void Letter(SchetsControl s, char c);
+        void Compleet(Graphics g, Point p1, Point p2, Brush kwast);
     }
 
     public abstract class StartpuntTool : ISchetsTool
     {
         protected Point startpunt;
         protected Brush kwast;
+        protected SchetsControl s; //NIEUW
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
+            this.s = s;
         }
         public virtual void MuisLos(SchetsControl s, Point p)
         {   kwast = new SolidBrush(s.PenKleur);
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
+
+        public virtual void Compleet(Graphics g, Point p1, Point p2, Brush kwast) { }
     }
 
     public class TekstTool : StartpuntTool
@@ -74,7 +80,8 @@ namespace SchetsEditor
         }
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
-            this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
+            this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p, kwast);
+            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast));
             s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)
@@ -82,8 +89,9 @@ namespace SchetsEditor
         }
         public abstract void Bezig(Graphics g, Point p1, Point p2);
         
-        public virtual void Compleet(Graphics g, Point p1, Point p2)
-        {   this.Bezig(g, p1, p2);
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
+        { 
+           this.Bezig(g, p1, p2);
         }
     }
 
@@ -109,15 +117,17 @@ namespace SchetsEditor
     {
         public override string ToString() { return "vlak"; }
 
-        public override void Compleet(Graphics g, Point p1, Point p2)
-        {   g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
+        {
+            Console.WriteLine("drawing rectangle");
+            g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
     public class VolCirkelTool : CirkelTool         //New!
     {
         public override string ToString() { return "rondje"; }
 
-        public override void Compleet(Graphics g, Point p1, Point p2)
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
         {
             g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -142,12 +152,34 @@ namespace SchetsEditor
         }
     }
     
-    public class GumTool : PenTool
+    public class GumTool : StartpuntTool
     {
-        public override string ToString() { return "gum"; }
-
-        public override void Bezig(Graphics g, Point p1, Point p2)
-        {   g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
+        public override void Letter(SchetsControl s, char c)
+        {
         }
+
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            ArrayList tekenElementen = s.TekenElementen;
+
+            for (int i = tekenElementen.Count - 1; i >= 0; i--)
+            {
+                TekenElement e = ((TekenElement)tekenElementen[i]);
+                if (e.Contains(startpunt))
+                {
+                    tekenElementen.Remove(e); //remove e from TekenElementen
+                    i++;
+                    s.TekenBitmapOpnieuw(); //Redraw bitmap from TekenElement ArrayList, en daar zit nu e niet meer in
+                    break;
+
+                }
+            }
+        }
+
+        public override string ToString() { return "gum"; }
     }
 }

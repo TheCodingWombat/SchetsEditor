@@ -27,9 +27,9 @@ namespace SchetsEditor
                                  , Assembly.GetExecutingAssembly()
                                  );
 
-        ArrayList tekenElementen = new ArrayList();
 
-        private void veranderAfmeting(object o, EventArgs ea)
+
+    private void veranderAfmeting(object o, EventArgs ea)
         {
             schetscontrol.Size = new Size ( this.ClientSize.Width  - 70
                                           , this.ClientSize.Height - 50);
@@ -109,7 +109,8 @@ namespace SchetsEditor
         }
         public SchetsWin()
         {
-            ISchetsTool[] deTools = { new PenTool()         
+
+            ISchetsTool[] deTools = { new PenTool() 
                                     , new LijnTool()
                                     , new RechthoekTool()
                                     , new VolRechthoekTool()
@@ -118,6 +119,7 @@ namespace SchetsEditor
                                     , new TekstTool()
                                     , new GumTool()
                                     };
+
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
                                  , "Yellow", "Magenta", "Cyan" 
                                  };
