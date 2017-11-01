@@ -171,6 +171,7 @@ namespace SchetsEditor
                 TekenElement e = ((TekenElement)tekenElementen[i]);
                 if (e.Contains(startpunt))
                 {
+                    Console.WriteLine(i);
                     tekenElementen.Remove(e); //remove e from TekenElementen
                     i++;
                     s.TekenBitmapOpnieuw(); //Redraw bitmap from TekenElement ArrayList, en daar zit nu e niet meer in
