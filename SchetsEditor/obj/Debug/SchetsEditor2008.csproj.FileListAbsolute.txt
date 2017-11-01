@@ -1,0 +1,3 @@
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.Properties.Resources.resources
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.GenerateResource.Cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.CoreCompileInputs.cache

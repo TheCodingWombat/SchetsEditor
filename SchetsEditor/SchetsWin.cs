@@ -21,7 +21,7 @@ namespace SchetsEditor
         string Tekst;           //New!
         public string Bestandsnaam = "";       //New!
         int formaat;            //New!!
-        public int OpslagFormaat;       //New!
+        public int Opslagformaat;       //New!
         ResourceManager resourcemanager
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
@@ -77,12 +77,16 @@ namespace SchetsEditor
                 schrijfNaarFile(saved);
                 formaat = dialoog.FilterIndex;
                 Bestandsnaam = this.Tekst;
-                OpslagFormaat = formaat;
+                Opslagformaat = formaat;
             }
+        }
+        public int OpslagFormaat //New Method!
+        {
+            set { Opslagformaat = value;}
         }
         private void opslaan(object obj, EventArgs ea) //New method!
         {
-            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; formaat = OpslagFormaat; Bitmap saved = schets.Bitmap; schrijfNaarFile(saved); }
+            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; formaat = Opslagformaat; Bitmap saved = schets.Bitmap; schrijfNaarFile(saved); }
             else opslaanals(obj, ea);
         }
         private void schrijfNaarFile(Bitmap Saved)      //New method!
@@ -114,8 +118,8 @@ namespace SchetsEditor
                                     , new LijnTool()
                                     , new RechthoekTool()
                                     , new VolRechthoekTool()
-                                    , new CirkelTool()
-                                    , new VolCirkelTool()
+                                    , new CirkelTool() //
+                                    , new VolCirkelTool() //
                                     , new TekstTool()
                                     , new GumTool()
                                     };
