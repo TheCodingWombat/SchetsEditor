@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SchetsEditor
 {
@@ -26,10 +27,16 @@ namespace SchetsEditor
                         return true;
                     return false;
                 case "rondje":
-                    if ((p.X < ((beginPunt.X + eindPunt.X) / 2) + (eindPunt.X - beginPunt.X)/2 ) && p.X > ((beginPunt.X + eindPunt.X) / 2) - (eindPunt.X - beginPunt.X)/2 )
-                        if ((p.Y < ((beginPunt.Y + eindPunt.Y) / 2) + (eindPunt.Y - beginPunt.Y)/2 ) && p.Y > ((beginPunt.Y + eindPunt.Y) / 2) - (eindPunt.Y - beginPunt.Y)/2 )
-                            return true;
-                    return false;
+                    //if ((p.X < ((beginPunt.X + eindPunt.X) / 2) + (eindPunt.X - beginPunt.X)/2 ) && p.X > ((beginPunt.X + eindPunt.X) / 2) - (eindPunt.X - beginPunt.X)/2 )
+                    //    if ((p.Y < ((beginPunt.Y + eindPunt.Y) / 2) + (eindPunt.Y - beginPunt.Y)/2 ) && p.Y > ((beginPunt.Y + eindPunt.Y) / 2) - (eindPunt.Y - beginPunt.Y)/2 )
+                    //        return true;
+
+                    //TODO er zou niet elke keer een nieuw rectangle en graphicspath gemaakt moeten worden dat de gum gebruikt wordt
+                    Rectangle myEllipse = new Rectangle(beginPunt.X, beginPunt.Y, Math.Abs(eindPunt.X - beginPunt.X), Math.Abs(eindPunt.Y - beginPunt.Y));
+                    // use the bounding box of your ellipse instead
+                    GraphicsPath myPath = new GraphicsPath();
+                    myPath.AddEllipse(myEllipse);
+                    return myPath.IsVisible(p.X, p.Y);
                 case "lijn":
                     if (Math.Abs((eindPunt.X - beginPunt.X) * (beginPunt.Y - p.Y) - (beginPunt.X - p.X) * (eindPunt.Y - beginPunt.Y)) / //Met behulp van http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
                     Math.Sqrt(Math.Pow(eindPunt.X - beginPunt.X, 2) + Math.Pow(eindPunt.Y - beginPunt.Y, 2)) < 5)
