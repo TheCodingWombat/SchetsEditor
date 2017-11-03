@@ -9,6 +9,7 @@ namespace SchetsEditor
     {   private Schets schets;
         private Color penkleur;
 
+
         private ArrayList tekenElementen = new ArrayList();
 
         public ArrayList TekenElementen
@@ -60,7 +61,7 @@ namespace SchetsEditor
                 Console.WriteLine("Redrawing element" + e.tool.ToString());
                 if(e.tool.ToString() != "tekst")
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
-                else (e.tool).MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
+                //else Tools.TekstTool.MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
             }
             
         }

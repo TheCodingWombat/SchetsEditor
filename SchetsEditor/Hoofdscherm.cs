@@ -72,6 +72,8 @@ namespace SchetsEditor
                         Console.WriteLine("open formaat:"+Path.GetExtension(dialoog.FileName).ToLower());
                         break;
                     case 4:
+                        if(s != null) s.afsluiten(obj, ea);
+                        nieuw(obj, ea);
                         s.OpenJson(dialoog.FileName);
                         break;
                 }

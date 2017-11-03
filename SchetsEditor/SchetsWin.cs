@@ -127,7 +127,9 @@ namespace SchetsEditor
             ArrayList elementen = schetscontrol.TekenElementen;
             StreamWriter writer= new StreamWriter(this.Tekst);
             foreach(TekenElement e in elementen){
-                    writer.WriteLine(e.tool.ToString() + " " + e.beginPunt + " " + e.eindPunt + " " + new Pen(e.kwast).Color);
+                Console.WriteLine(new Pen(e.kwast).Color.R);
+
+                    writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " " + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B);
                 //writer.WriteLine("Mission failed!");
             }
             writer.Close();
@@ -153,10 +155,12 @@ namespace SchetsEditor
                 else tool = null;
                 
 
-                Point beginpunt = new Point(int.Parse(r[1]));
-                Point eindpunt = new Point(int.Parse(r[2]));
-                Brush brush = new SolidBrush(Color.FromName(r[3]));
+                Point beginpunt = new Point(int.Parse(r[1]), int.Parse(r[2]));
+                Point eindpunt = new Point(int.Parse(r[3]), int.Parse(r[4]));
+                Brush brush = new SolidBrush(Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
+                Console.WriteLine(tool.ToString() + " " + beginpunt + " " + eindpunt + " " + brush);
                 schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush));
+                schetscontrol.TekenBitmapOpnieuw();
             }    
 
         }

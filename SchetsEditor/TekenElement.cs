@@ -23,28 +23,52 @@ namespace SchetsEditor
             switch (tool.ToString())
             {
                 case "vlak":
-                    if (beginPunt.X <= p.X + 5 && eindPunt.X >= p.X - 5 && beginPunt.Y <= p.Y + 5 && eindPunt.Y >= p.Y - 5) //Extra 5 pixel margin toegevoegd!
-                        return true;
-                    return false;
+                    TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
+                    Rectangle myRectangle = TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
+                    //if(beginPunt.X > eindPunt.X) myRectangle = new Rectangle(eindPunt.X, eindPunt.Y, Math.Abs(beginPunt.X - eindPunt.X), Math.Abs(beginPunt.Y - eindPunt.Y));
+                    return myRectangle.Contains(p);
                 case "rondje":
                     //if ((p.X < ((beginPunt.X + eindPunt.X) / 2) + (eindPunt.X - beginPunt.X)/2 ) && p.X > ((beginPunt.X + eindPunt.X) / 2) - (eindPunt.X - beginPunt.X)/2 )
-                    //    if ((p.Y < ((beginPunt.Y + eindPunt.Y) / 2) + (eindPunt.Y - beginPunt.Y)/2 ) && p.Y > ((beginPunt.Y + eindPunt.Y) / 2) - (eindPunt.Y - beginPunt.Y)/2 )
-                    //        return true;
+                      //  if ((p.Y < ((beginPunt.Y + eindPunt.Y) / 2) + (eindPunt.Y - beginPunt.Y)/2 ) && p.Y > ((beginPunt.Y + eindPunt.Y) / 2) - (eindPunt.Y - beginPunt.Y)/2 )
+                        //   return true;
+                    Rectangle myEllipse = TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
+                    double h = (Math.Abs(eindPunt.X+beginPunt.X) / 2);
+                    double k = (Math.Abs(eindPunt.Y+beginPunt.Y) / 2);
+                    double rx = myEllipse.Width/2;
+                    double ry = myEllipse.Height/2;
+                    double berekening = ((((p.X - h)*(p.X - h)) / (rx*rx)) + (((p.Y - k)*(p.Y - k)) / (ry*ry))) ;
+                    //Console.WriteLine("r_x " + rx + " r_y " + ry + " k " + k + " h " + h);
+                    //Console.WriteLine(((((p.X - h)*(p.X - h)) / (rx*rx)) + (((p.Y - k)*(p.Y - k)) / (ry*ry)) <= 1));
+
+                    if(berekening <= 1.1)
+                        return true;
+                    return false;
 
                     //TODO er zou niet elke keer een nieuw rectangle en graphicspath gemaakt moeten worden dat de gum gebruikt wordt
-                    Rectangle myEllipse = new Rectangle(beginPunt.X, beginPunt.Y, Math.Abs(eindPunt.X - beginPunt.X), Math.Abs(eindPunt.Y - beginPunt.Y));
+                    //Rectangle myEllipse = TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
+                    //if(beginPunt.X > eindPunt.X) myEllipse = new Rectangle(eindPunt.X, eindPunt.Y, Math.Abs(beginPunt.X - eindPunt.X), Math.Abs(beginPunt.Y - eindPunt.Y));
                     // use the bounding box of your ellipse instead
-                    GraphicsPath myPath = new GraphicsPath();
-                    myPath.AddEllipse(myEllipse);
-                    return myPath.IsVisible(p.X, p.Y);
+                    //GraphicsPath myPath = new GraphicsPath();
+                    //myPath.AddEllipse(myEllipse);
+                    //return myPath.IsVisible(p.X, p.Y);
+                    //return myEllipse.Contains(p);
                 case "lijn":
                     if (Math.Abs((eindPunt.X - beginPunt.X) * (beginPunt.Y - p.Y) - (beginPunt.X - p.X) * (eindPunt.Y - beginPunt.Y)) / //Met behulp van http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
                     Math.Sqrt(Math.Pow(eindPunt.X - beginPunt.X, 2) + Math.Pow(eindPunt.Y - beginPunt.Y, 2)) < 5)
                         return true;
                     return false;
                 case "cirkel":
-                    if((p.X < ((beginPunt.X + eindPunt.X) / 2) + (eindPunt.X - beginPunt.X) / 2) && p.X > ((beginPunt.X + eindPunt.X) / 2) - (eindPunt.X - beginPunt.X) / 2)
-                        if ((p.Y < ((beginPunt.Y + eindPunt.Y) / 2) + (eindPunt.Y - beginPunt.Y) / 2) && p.Y > ((beginPunt.Y + eindPunt.Y) / 2) - (eindPunt.Y - beginPunt.Y) / 2)
+
+                    Rectangle myEllipseOpen = TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
+                    h = (Math.Abs(eindPunt.X+beginPunt.X) / 2);
+                    k = (Math.Abs(eindPunt.Y+beginPunt.Y) / 2);
+                    rx = myEllipseOpen.Width/2;
+                    ry = myEllipseOpen.Height/2;
+                    berekening = ((((p.X - h)*(p.X - h)) / (rx*rx)) + (((p.Y - k)*(p.Y - k)) / (ry*ry))) ;
+                    Console.WriteLine("r_x " + rx + " r_y " + ry + " k " + k + " h " + h);
+                    Console.WriteLine(((((p.X - h)*(p.X - h)) / (rx*rx)) + (((p.Y - k)*(p.Y - k)) / (ry*ry)) == 1));
+
+                    if(berekening < 1.5 && berekening > 0.5 )
                         return true;
                     return false;
 
@@ -58,6 +82,12 @@ namespace SchetsEditor
                     if ((beginPunt.Y <= p.Y + 5 && eindPunt.Y >= p.Y + 5) && (eindPunt.X <= p.X + 5 && eindPunt.X >= p.X - 5))
                         return true;
                     return false;
+                case "pen":
+                    if (Math.Abs((eindPunt.X - beginPunt.X) * (beginPunt.Y - p.Y) - (beginPunt.X - p.X) * (eindPunt.Y - beginPunt.Y)) / //Met behulp van http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
+                    Math.Sqrt(Math.Pow(eindPunt.X - beginPunt.X, 2) + Math.Pow(eindPunt.Y - beginPunt.Y, 2)) < 5)
+                        return true;
+                    return false;
+                
                 default:
                     return false;
             }
