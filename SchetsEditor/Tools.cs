@@ -31,6 +31,7 @@ namespace SchetsEditor
         public abstract void Letter(SchetsControl s, char c);
 
         public virtual void Compleet(Graphics g, Point p1, Point p2, Brush kwast) { }
+        public virtual void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) { }
     }
 
     public class TekstTool : StartpuntTool
@@ -38,6 +39,14 @@ namespace SchetsEditor
         public override string ToString() { return "tekst"; }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
+
+        public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast)
+        {
+            this.startpunt = p1;
+            char c = (char)(p2.X);
+            this.kwast = kwast;
+            Letter(s, c);
+        }
 
         public override void Letter(SchetsControl s, char c)
         {
@@ -52,6 +61,7 @@ namespace SchetsEditor
                                               this.startpunt, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 startpunt.X += (int)sz.Width;
+                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point((int)c,0), kwast));
                 s.Invalidate();
             }
         }

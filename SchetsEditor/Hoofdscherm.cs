@@ -54,16 +54,27 @@ namespace SchetsEditor
         private void open(object obj, EventArgs ea)     //New!
         {
             OpenFileDialog dialoog = new OpenFileDialog();
-            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Alle files|*.*";
+            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.txt|Alle files|*.*";
             dialoog.Title = "Openen ...";
             if (dialoog.ShowDialog() == DialogResult.OK)
             {
-                if(s != null) s.afsluiten(obj, ea);
-                nieuw(obj, ea);
-                s.schets.bitmap = new Bitmap(dialoog.FileName, true);
-                s.Bestandsnaam = dialoog.FileName;
-                s.OpslagFormaat = dialoog.FilterIndex -1;
-                Console.WriteLine("open formaat:"+Path.GetExtension(dialoog.FileName).ToLower());
+                switch(dialoog.FilterIndex)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 5:
+                        if(s != null) s.afsluiten(obj, ea);
+                        nieuw(obj, ea);
+                        s.schets.bitmap = new Bitmap(dialoog.FileName, true);
+                        s.Bestandsnaam = dialoog.FileName;
+                        s.OpslagFormaat = dialoog.FilterIndex -1;
+                        Console.WriteLine("open formaat:"+Path.GetExtension(dialoog.FileName).ToLower());
+                        break;
+                    case 4:
+                        s.OpenJson(dialoog.FileName);
+                        break;
+                }
             }
         }
     }

@@ -68,16 +68,17 @@ namespace SchetsEditor
         private void opslaanals(object obj, EventArgs ea) //New method!
         {
             SaveFileDialog dialoog = new SaveFileDialog();
-            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.json|Alle files|*.*";
+            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.txt|Alle files|*.*";
             dialoog.Title = "Opslaan als ...";
             if(dialoog.ShowDialog() == DialogResult.OK)
             {
                 Bitmap saved = new Bitmap(schets.Bitmap);
                 this.Tekst = dialoog.FileName;
-                schrijfNaarFile(saved);
-                formaat = dialoog.FilterIndex;
-                Bestandsnaam = this.Tekst;
                 Console.WriteLine(Path.GetExtension(this.Tekst).ToLower());
+                Console.WriteLine(dialoog.FilterIndex + "dialoog.FilterIndex");
+                formaat = dialoog.FilterIndex;
+                schrijfNaarFile(saved);
+                Bestandsnaam = this.Tekst;
             }
         }
         public int OpslagFormaat //New Method!
@@ -86,44 +87,78 @@ namespace SchetsEditor
         }
         private void opslaan(object obj, EventArgs ea) //New method!
         {
-            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); formaat = Opslagformaat; schrijfNaarFile(saved); }
+            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); formaat = Opslagformaat;  schrijfNaarFile(saved); }
             else opslaanals(obj, ea);
         }
         private void schrijfNaarFile(Bitmap Saved)      //New method!
         {
             //MemoryStream writer = new MemoryStream(); //Voor opslaan als naar bitmap die weer te gebruiken is ... punt 5 ofzo
             Console.WriteLine(this.Tekst);
-            //Console.WriteLine("formaat:" + formaat);
+            Console.WriteLine("formaat:" + formaat);
             Console.WriteLine(formaat);
             switch (formaat)
             {
-                case 0:
-                    Saved.Save(this.Tekst, ImageFormat.Png); Console.WriteLine("PNG!");
-                    break;
                 case 1:
-                    Saved.Save(this.Tekst, ImageFormat.Jpeg);
+                    Saved.Save(this.Tekst, ImageFormat.Png);
+                    Console.WriteLine("PNG!");
                     break;
                 case 2:
-                    Saved.Save(this.Tekst, ImageFormat.Bmp);
+                    Saved.Save(this.Tekst, ImageFormat.Jpeg);
+                    Console.WriteLine("JPG!");
                     break;
                 case 3:
-                    Console.WriteLine("JSON!"); schrijfNaarJson(); Console.WriteLine("JSON!");
+                    Saved.Save(this.Tekst, ImageFormat.Bmp);
+                    Console.WriteLine("BMP!");
                     break;
                 case 4:
+                    Console.WriteLine("JSON!"); schrijfNaarJson(); Console.WriteLine("JSON!");
+                    break;
+                case 5:
                     Saved.Save(this.Tekst);
+                    Console.WriteLine("ALLE FILES");
                     break;
             }
             //writer.Close();
         }
         private void schrijfNaarJson()
         {
+            Console.WriteLine("Schrijf naar JSON");
+            
             ArrayList elementen = schetscontrol.TekenElementen;
             StreamWriter writer= new StreamWriter(this.Tekst);
             foreach(TekenElement e in elementen){
-                writer.Write(e.tool + " " + e.beginPunt.X + " " + e.eindPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.Y);
-                writer.Write("\n");
-                Console.WriteLine("Ha \n ha!");
+                    writer.WriteLine(e.tool.ToString() + " " + e.beginPunt + " " + e.eindPunt + " " + new Pen(e.kwast).Color);
+                //writer.WriteLine("Mission failed!");
             }
+            writer.Close();
+        }
+        public void OpenJson(string File)
+        {
+            
+            string regel;
+            StreamReader sr = new StreamReader(File);
+            schetscontrol.TekenElementen = null;
+            schetscontrol.TekenElementen = new ArrayList();
+            for(int n = 0;(regel = sr.ReadLine()) != null; n++)
+            {
+                string [] r = regel.Split(' ');
+                ISchetsTool tool;
+                if(r[0] == "vlak") tool = new VolRechthoekTool();
+                else if(r[0] == "kader") tool = new RechthoekTool();
+                else if(r[0] == "rondje") tool = new VolCirkelTool();
+                else if(r[0] == "cirkel") tool = new CirkelTool();
+                else if(r[0] == "lijn") tool = new LijnTool();
+                else if(r[0] == "pen") tool = new PenTool();
+                else if(r[0] == "tekst") tool = new TekstTool();
+                else tool = null;
+                
+
+                Point beginpunt = new Point(int.Parse(r[1]));
+                Point eindpunt = new Point(int.Parse(r[2]));
+                Brush brush = new SolidBrush(Color.FromName(r[3]));
+                schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush));
+            }    
+
         }
         public SchetsWin()
         {

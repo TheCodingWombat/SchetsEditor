@@ -58,7 +58,9 @@ namespace SchetsEditor
             foreach (TekenElement e in tekenElementen)
             {
                 Console.WriteLine("Redrawing element" + e.tool.ToString());
-                (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
+                if(e.tool.ToString() != "tekst")
+                    (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
+                else (e.tool).MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
             }
             
         }
