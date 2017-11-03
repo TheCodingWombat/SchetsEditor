@@ -6,7 +6,7 @@ namespace SchetsEditor
 {
     public class Schets
     {
-        Bitmap bitmap;      //Nu public en static!
+        public Bitmap bitmap;      //Nu public en static!
         private bool changed;        //New!
         
         public Schets()

@@ -68,16 +68,16 @@ namespace SchetsEditor
         private void opslaanals(object obj, EventArgs ea) //New method!
         {
             SaveFileDialog dialoog = new SaveFileDialog();
-            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Alle files|*.*";
+            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.json|Alle files|*.*";
             dialoog.Title = "Opslaan als ...";
             if(dialoog.ShowDialog() == DialogResult.OK)
             {
-                Bitmap saved = schets.Bitmap;
+                Bitmap saved = new Bitmap(schets.Bitmap);
                 this.Tekst = dialoog.FileName;
                 schrijfNaarFile(saved);
                 formaat = dialoog.FilterIndex;
                 Bestandsnaam = this.Tekst;
-                Opslagformaat = formaat;
+                Console.WriteLine(Path.GetExtension(this.Tekst).ToLower());
             }
         }
         public int OpslagFormaat //New Method!
@@ -86,18 +86,19 @@ namespace SchetsEditor
         }
         private void opslaan(object obj, EventArgs ea) //New method!
         {
-            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; formaat = Opslagformaat; Bitmap saved = schets.Bitmap; schrijfNaarFile(saved); }
+            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); formaat = Opslagformaat; schrijfNaarFile(saved); }
             else opslaanals(obj, ea);
         }
         private void schrijfNaarFile(Bitmap Saved)      //New method!
         {
             //MemoryStream writer = new MemoryStream(); //Voor opslaan als naar bitmap die weer te gebruiken is ... punt 5 ofzo
             Console.WriteLine(this.Tekst);
+            //Console.WriteLine("formaat:" + formaat);
             Console.WriteLine(formaat);
             switch (formaat)
             {
                 case 0:
-                    Saved.Save(this.Tekst, ImageFormat.Png);
+                    Saved.Save(this.Tekst, ImageFormat.Png); Console.WriteLine("PNG!");
                     break;
                 case 1:
                     Saved.Save(this.Tekst, ImageFormat.Jpeg);
@@ -106,10 +107,23 @@ namespace SchetsEditor
                     Saved.Save(this.Tekst, ImageFormat.Bmp);
                     break;
                 case 3:
+                    Console.WriteLine("JSON!"); schrijfNaarJson(); Console.WriteLine("JSON!");
+                    break;
+                case 4:
                     Saved.Save(this.Tekst);
                     break;
             }
             //writer.Close();
+        }
+        private void schrijfNaarJson()
+        {
+            ArrayList elementen = schetscontrol.TekenElementen;
+            StreamWriter writer= new StreamWriter(this.Tekst);
+            foreach(TekenElement e in elementen){
+                writer.Write(e.tool + " " + e.beginPunt.X + " " + e.eindPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.Y);
+                writer.Write("\n");
+                Console.WriteLine("Ha \n ha!");
+            }
         }
         public SchetsWin()
         {

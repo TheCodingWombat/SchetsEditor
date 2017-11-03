@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace SchetsEditor
 {
@@ -53,15 +54,16 @@ namespace SchetsEditor
         private void open(object obj, EventArgs ea)     //New!
         {
             OpenFileDialog dialoog = new OpenFileDialog();
-            dialoog.Filter = "Foto's|*.png;*.jpg;*.bmp|Alle files|*.*";
+            dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Alle files|*.*";
             dialoog.Title = "Openen ...";
             if (dialoog.ShowDialog() == DialogResult.OK)
             {
                 if(s != null) s.afsluiten(obj, ea);
                 nieuw(obj, ea);
-                s.schets.Bitmap = new Bitmap(dialoog.FileName);
+                s.schets.bitmap = new Bitmap(dialoog.FileName, true);
                 s.Bestandsnaam = dialoog.FileName;
-                s.OpslagFormaat = dialoog.FilterIndex;
+                s.OpslagFormaat = dialoog.FilterIndex -1;
+                Console.WriteLine("open formaat:"+Path.GetExtension(dialoog.FileName).ToLower());
             }
         }
     }
