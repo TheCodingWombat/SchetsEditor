@@ -1,3 +1,7 @@
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.Properties.Resources.resources
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.GenerateResource.Cache
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub1\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.CoreCompileInputs.cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csprojResolveAssemblyReference.cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor.Properties.Resources.resources
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.GenerateResource.Cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\Debug\SchetsEditor2008.csproj.CoreCompileInputs.cache

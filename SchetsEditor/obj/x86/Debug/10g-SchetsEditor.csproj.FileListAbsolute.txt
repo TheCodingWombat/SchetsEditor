@@ -30,3 +30,11 @@ D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub3\SchetsE
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub3\SchetsEditor\SchetsEditor\obj\x86\Debug\Schets.pdb
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub3\SchetsEditor\SchetsEditor\bin\Debug\Schets.exe
 D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub3\SchetsEditor\SchetsEditor\bin\Debug\Schets.pdb
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\bin\Debug\Schets.exe
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\bin\Debug\Schets.pdb
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\10g-SchetsEditor.csprojResolveAssemblyReference.cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\SchetsEditor.Properties.Resources.resources
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\10g-SchetsEditor.csproj.GenerateResource.Cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\10g-SchetsEditor.csproj.CoreCompileInputs.cache
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\Schets.exe
+D:\Users\Xavier\Documents\Computer Sience\Visual Studio Projects\GitHub34\SchetsEditor\SchetsEditor\obj\x86\Debug\Schets.pdb

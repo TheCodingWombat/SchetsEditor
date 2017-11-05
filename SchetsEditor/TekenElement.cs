@@ -36,10 +36,18 @@ namespace SchetsEditor
                     if(berekening <= 1.1)
                         return true;
                     return false;
-                case "lijn":
-                    if (Math.Abs((eindPunt.X - beginPunt.X) * (beginPunt.Y - p.Y) - (beginPunt.X - p.X) * (eindPunt.Y - beginPunt.Y)) / //Met behulp van http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
-                    Math.Sqrt(Math.Pow(eindPunt.X - beginPunt.X, 2) + Math.Pow(eindPunt.Y - beginPunt.Y, 2)) < 5)
-                        return true;
+                case "lijn": //Met behulp van https://autohotkey.com/board/topic/60656-calculate-the-distance-between-a-point-and-a-line-segment/
+                    double px = eindPunt.X - beginPunt.X;
+                    double py = eindPunt.Y - beginPunt.Y;
+                    double u = ((p.X - beginPunt.X)*px + (p.Y-beginPunt.Y)*py)/(px*px + py*py);
+                    if(u > 1) u = 1;
+                    Console.WriteLine("u: "+u);
+                    double x = beginPunt.X + u*px;
+                    double y = beginPunt.Y + u*py;
+                    double dx = x - p.X;
+                    double dy = y - p.Y;
+                    Console.WriteLine(dx*dx + dy*dy);
+                    if((dx*dx + dy*dy)<100) return true;
                     return false;
                 case "cirkel":
 
@@ -66,10 +74,18 @@ namespace SchetsEditor
                     if ((beginPunt.Y <= p.Y + 5 && eindPunt.Y >= p.Y + 5) && (eindPunt.X <= p.X + 5 && eindPunt.X >= p.X - 5))
                         return true;
                     return false;
-                case "pen":
-                    if (Math.Abs((eindPunt.X - beginPunt.X) * (beginPunt.Y - p.Y) - (beginPunt.X - p.X) * (eindPunt.Y - beginPunt.Y)) / //Met behulp van http://www.java2s.com/Code/CSharp/Development-Class/DistanceFromPointToLine.htm
-                        Math.Sqrt(Math.Pow(eindPunt.X - beginPunt.X, 2) + Math.Pow(eindPunt.Y - beginPunt.Y, 2)) < 5)
-                        return true;
+                case "pen": //Met behulp van https://autohotkey.com/board/topic/60656-calculate-the-distance-between-a-point-and-a-line-segment/
+                    px = eindPunt.X - beginPunt.X;
+                    py = eindPunt.Y - beginPunt.Y;
+                    u = ((p.X - beginPunt.X)*px + (p.Y-beginPunt.Y)*py)/(px*px + py*py);
+                    if(u > 1) u = 1;
+                    Console.WriteLine("u: " + u);
+                    x = beginPunt.X + u*px;
+                    y = beginPunt.Y + u*py;
+                    dx = x - p.X;
+                    dy = y - p.Y;
+                    Console.WriteLine(dx*dx + dy*dy);
+                    if((dx*dx + dy*dy)<100) return true;
                     return false;
                 
                 default:
