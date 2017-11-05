@@ -11,6 +11,7 @@ namespace SchetsEditor
 
 
         private ArrayList tekenElementen = new ArrayList();
+        private ArrayList undoElementen = new ArrayList();
 
         public ArrayList TekenElementen
         {
@@ -34,12 +35,14 @@ namespace SchetsEditor
             this.Paint += this.teken;
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
+            penkleur = Color.Black;
         }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
         }
         private void teken(object o, PaintEventArgs pea)
         {   schets.Teken(pea.Graphics);
+            undoElementen.Clear();
         }
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);
@@ -58,16 +61,49 @@ namespace SchetsEditor
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
-                Console.WriteLine("Redrawing element" + e.tool.ToString());
-                if(e.tool.ToString() != "tekst")
+                Console.WriteLine("Redrawing element" + e.tool.ToString() + " met " + e.kwast);
+                //if(e.tool.ToString() != "tekst")
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
                 //else Tools.TekstTool.MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
             }
             
         }
-
+        public void Undo(object o, EventArgs ea)
+        {
+            if(tekenElementen.Count >= 1)
+                {
+                foreach (TekenElement e in tekenElementen)
+                    {
+                         Console.WriteLine("Testing foreach");                                    
+                    if(tekenElementen.IndexOf(e) == tekenElementen.Count -1)
+                        {
+                            undoElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));
+                            tekenElementen.RemoveAt(tekenElementen.Count - 1);
+                            break;
+                        } // :)
+                    }
+                }
+            Console.WriteLine("TekenElementenCount: "+tekenElementen.Count);
+            Console.WriteLine("UndoElementenCount: "+undoElementen.Count);
+            TekenBitmapOpnieuw();
+        }
+        public void Redo(object o, EventArgs ea)
+        {
+            if(undoElementen.Count >= 1)
+                foreach(TekenElement e in undoElementen)
+                    if(undoElementen.IndexOf(e) == undoElementen.Count -1)
+                        {
+                        tekenElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));
+                        undoElementen.RemoveAt(undoElementen.Count - 1);
+                        break;
+                        }
+            Console.WriteLine("TekenElementenCount: "+tekenElementen.Count);
+            Console.WriteLine("UndoElementenCount: "+undoElementen.Count);
+            TekenBitmapOpnieuw();
+        }
         public void Schoon(object o, EventArgs ea)
-        {   schets.Schoon();
+        {   tekenElementen.Clear();
+            schets.Schoon();
             this.Invalidate();
         }
         public void Roteer(object o, EventArgs ea)
@@ -76,12 +112,14 @@ namespace SchetsEditor
             this.Invalidate();
         }
         public void VeranderKleur(object obj, EventArgs ea)
-        {   string kleurNaam = ((ComboBox)obj).Text;
-            penkleur = Color.FromName(kleurNaam);
+        {   ColorDialog dialoog = new ColorDialog();
+            dialoog.AllowFullOpen = true;
+            dialoog.Color = penkleur;
+            if(dialoog.ShowDialog() == DialogResult.OK)
+                penkleur = dialoog.Color;
         }
         public void VeranderKleurViaMenu(object obj, EventArgs ea)
-        {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
-            penkleur = Color.FromName(kleurNaam);
+        {   VeranderKleur(obj, ea);
         }
     }
 }

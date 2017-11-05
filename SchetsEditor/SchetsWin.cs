@@ -177,9 +177,9 @@ namespace SchetsEditor
                                     , new GumTool()
                                     };
 
-            String[] deKleuren = { "Black", "Red", "Green", "Blue"
-                                 , "Yellow", "Magenta", "Cyan" 
-                                 };
+           // String[] deKleuren = { "Black", "Red", "Green", "Blue"
+             //                    , "Yellow", "Magenta", "Cyan" 
+               //                  };
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
@@ -211,9 +211,9 @@ namespace SchetsEditor
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakToolMenu(deTools);
-            this.maakAktieMenu(deKleuren);
+            this.maakAktieMenu(); //:)
             this.maakToolButtons(deTools);
-            this.maakAktieButtons(deKleuren);
+            this.maakAktieButtons(); // :)
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
@@ -242,15 +242,21 @@ namespace SchetsEditor
             menuStrip.Items.Add(menu);
         }
 
-        private void maakAktieMenu(String[] kleuren)
+        private void maakAktieMenu()
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
+            
+            //ToolStripDropDownButton Undo = new ToolStripDropDownButton("Undo",null,schetscontrol.Undo);
+            
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
-            ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
-            foreach (string k in kleuren)
-                submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
-            menu.DropDownItems.Add(submenu);
+            menu.DropDownItems.Add("Kleur", null, schetscontrol.VeranderKleur);
+            menu.DropDownItems.Add("Undo", null, schetscontrol.Undo);
+            menu.DropDownItems.Add("Redo", null, schetscontrol.Redo);
+            //ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
+            //foreach (string k in kleuren)
+              //  submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
+            //menu.DropDownItems.Add(submenu);
             menuStrip.Items.Add(menu);
         }
 
@@ -275,13 +281,13 @@ namespace SchetsEditor
             }
         }
 
-        private void maakAktieButtons(String[] kleuren)
+        private void maakAktieButtons()
         {   
             paneel = new Panel();
             paneel.Size = new Size(600, 24);
             this.Controls.Add(paneel);
             
-            Button b; Label l; ComboBox cbb;
+            Button b; //Label l; ComboBox cbb;
             b = new Button(); 
             b.Text = "Clear";  
             b.Location = new Point(  0, 0); 
@@ -294,19 +300,32 @@ namespace SchetsEditor
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
             
-            l = new Label();  
-            l.Text = "Penkleur:"; 
-            l.Location = new Point(180, 3); 
-            l.AutoSize = true;               
-            paneel.Controls.Add(l);
+            //l = new Label();  
+            //l.Text = "Penkleur:"; 
+            //l.Location = new Point(180, 3); 
+            //l.AutoSize = true;               
+            //paneel.Controls.Add(l);
             
-            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
-            cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
-            cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
-            foreach (string k in kleuren)
-                cbb.Items.Add(k);
-            cbb.SelectedIndex = 0;
-            paneel.Controls.Add(cbb);
+            b = new Button(); b.Location = new Point(160, 0);
+            b.Text = "Kleur";
+            b.Click += schetscontrol.VeranderKleur;
+            paneel.Controls.Add(b);
+            //cbb = new ComboBox(); cbb.Location = new Point(240, 0); //dit zal een button worden
+            //cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
+            //cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
+            //foreach (string k in kleuren)
+              //  cbb.Items.Add(k);
+            //cbb.SelectedIndex = 0;
+            //paneel.Controls.Add(cbb);
+            b = new Button(); b.Location = new Point(240, 0);
+            b.Text = "Undo teken";
+            b.Click += schetscontrol.Undo;
+            paneel.Controls.Add(b);
+
+            b = new Button(); b.Location = new Point(320, 0);
+            b.Text = "Redo teken";
+            b.Click += schetscontrol.Redo;
+            paneel.Controls.Add(b);
         }
     }
 }
