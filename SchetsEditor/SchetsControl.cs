@@ -8,6 +8,7 @@ namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
+        private int countteken, countundo;
 
 
         private ArrayList tekenElementen = new ArrayList();
@@ -36,15 +37,16 @@ namespace SchetsEditor
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
             penkleur = Color.Black;
-            schets.Changed = false;
+            schets.Changed = false; countteken = 0; countundo = 0;
         }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
         }
         private void teken(object o, PaintEventArgs pea)
         {   schets.Teken(pea.Graphics); 
-            undoElementen.Clear();
-           if(tekenElementen.Count == 0){schets.Changed = false; /*Console.WriteLine("Falsed teken"); */}
+           if(tekenElementen.Count > countteken && undoElementen.Count == countundo) {undoElementen.Clear();}
+           if(tekenElementen.Count == 0){schets.Changed = false;}
+           countteken = tekenElementen.Count; countundo = undoElementen.Count;
         }       
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);
@@ -63,7 +65,7 @@ namespace SchetsEditor
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
-                Console.WriteLine("TBO:Redrawing element" + e.tool.ToString() + " met " + e.kwast);
+                //Console.WriteLine("TBO:Redrawing element" + e.tool.ToString() + " met " + e.kwast);
                 //if(e.tool.ToString() != "tekst")
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
                 //else Tools.TekstTool.MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
