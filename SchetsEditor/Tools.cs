@@ -25,7 +25,7 @@ namespace SchetsEditor
             this.s = s;
         }
         public virtual void MuisLos(SchetsControl s, Point p)
-        {   kwast = new SolidBrush(s.PenKleur);
+        {   kwast = new SolidBrush(s.PenKleur); Console.WriteLine(s.PenKleur);
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
@@ -91,7 +91,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p, kwast);
-            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast));
+            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast)); Console.WriteLine(kwast);
             s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)
@@ -147,8 +147,11 @@ namespace SchetsEditor
     {
         public override string ToString() { return "lijn"; }
 
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
+        {   g.DrawLine(MaakPen(kwast,3), p1, p2);
+        }
         public override void Bezig(Graphics g, Point p1, Point p2)
-        {   g.DrawLine(MaakPen(this.kwast,3), p1, p2);
+        {   g.DrawLine(MaakPen(this.kwast,3),p1,p2);
         }
     }
 

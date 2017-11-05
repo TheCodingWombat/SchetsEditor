@@ -46,7 +46,7 @@ namespace SchetsEditor
             changed = true; //New!
             //Console.WriteLine("Teken in schets.cs, changed:"+changed);
         }
-        public void Schoon()
+        public virtual void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
