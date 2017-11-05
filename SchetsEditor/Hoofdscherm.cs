@@ -26,6 +26,8 @@ namespace SchetsEditor
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
             menu.DropDownItems.Add("Openen..", null, this.open);  //New!
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
+            (menu.DropDownItems[0] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.N);
+            (menu.DropDownItems[1] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.O);
             menuStrip.Items.Add(menu);
         }
         private void maakHelpMenu()
@@ -46,6 +48,7 @@ namespace SchetsEditor
         {   s = new SchetsWin();                //Er stond: SchetsWin s = new SchetsWin(); !
             s.MdiParent = this;
             s.Show();
+            s.schets.Changed = false; Console.WriteLine("Falsed");
         }
         private void afsluiten(object sender, EventArgs e) 
         {

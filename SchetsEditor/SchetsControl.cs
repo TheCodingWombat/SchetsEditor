@@ -36,14 +36,16 @@ namespace SchetsEditor
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
             penkleur = Color.Black;
+            schets.Changed = false;
         }
         protected override void OnPaintBackground(PaintEventArgs e)
         {
         }
         private void teken(object o, PaintEventArgs pea)
-        {   schets.Teken(pea.Graphics);
+        {   schets.Teken(pea.Graphics); 
             undoElementen.Clear();
-        }
+           if(tekenElementen.Count == 0){schets.Changed = false; /*Console.WriteLine("Falsed teken"); */}
+        }       
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);
             this.Invalidate();
@@ -56,12 +58,12 @@ namespace SchetsEditor
 
         public void TekenBitmapOpnieuw()
         {
-            Console.WriteLine("tesdft");
+            //Console.WriteLine("tesdft");
             schets.Schoon();
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
-                Console.WriteLine("Redrawing element" + e.tool.ToString() + " met " + e.kwast);
+                Console.WriteLine("TBO:Redrawing element" + e.tool.ToString() + " met " + e.kwast);
                 //if(e.tool.ToString() != "tekst")
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
                 //else Tools.TekstTool.MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
@@ -74,7 +76,7 @@ namespace SchetsEditor
                 {
                 foreach (TekenElement e in tekenElementen)
                     {
-                         Console.WriteLine("Testing foreach");                                    
+                         //Console.WriteLine("Testing foreach");                                    
                     if(tekenElementen.IndexOf(e) == tekenElementen.Count -1)
                         {
                             undoElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));

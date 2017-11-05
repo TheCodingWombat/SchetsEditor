@@ -12,6 +12,7 @@ namespace SchetsEditor
         public Schets()
         {
             bitmap = new Bitmap(1, 1);
+            changed = false;
         }
         public Graphics BitmapGraphics
         {
@@ -20,6 +21,7 @@ namespace SchetsEditor
         public bool Changed         //New!
         {
             get { return changed; }
+            set { changed = value;}
         }
         public Bitmap Bitmap
         {
@@ -38,24 +40,24 @@ namespace SchetsEditor
                 gr.DrawImage(bitmap, 0, 0);
                 bitmap = nieuw;
             }
-            changed = true; //New!
+            //changed = true; //Console.WriteLine("Verander afmeting changed");//New!
         }
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            changed = true; //New!
+            changed = true; //Console.WriteLine("Teken changed");//New! 
             //Console.WriteLine("Teken in schets.cs, changed:"+changed);
         }
         public virtual void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-            changed = true; //New!
+            changed = true; //Console.WriteLine("Schoon changed");//New!
         }
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            changed = true; //New!
+            changed = true; //Console.WriteLine("Roteer changed"); //New!
         }
     }
 }

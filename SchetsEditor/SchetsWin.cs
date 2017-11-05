@@ -49,7 +49,8 @@ namespace SchetsEditor
         {
             DialogResult antwoord = MessageBox.Show("Weet u het zeker? \nEr zijn onopgeslagen wijzigingen aangebracht!", 
                 "Zeker weten?", MessageBoxButtons.OKCancel);
-            if (antwoord == DialogResult.OK) { return true; }else { return false; }  
+            if (antwoord == DialogResult.OK) { return true; }
+            else { return false; }  
         }
         public void afsluiten(object sender, EventArgs e) // NEW
         {
@@ -118,6 +119,7 @@ namespace SchetsEditor
                     Console.WriteLine("ALLE FILES");
                     break;
             }
+            schets.Changed = false;
             //writer.Close();
         }
         private void schrijfNaarJson()
@@ -136,13 +138,14 @@ namespace SchetsEditor
         }
         public void OpenJson(string File)
         {
-            
+            int n = 0; //
             string regel;
             StreamReader sr = new StreamReader(File);
             schetscontrol.TekenElementen = null;
             schetscontrol.TekenElementen = new ArrayList();
-            for(int n = 0;(regel = sr.ReadLine()) != null; n++)
+            while((regel = sr.ReadLine()) != null)
             {
+                n++;
                 string [] r = regel.Split(' ');
                 ISchetsTool tool;
                 if(r[0] == "vlak") tool = new VolRechthoekTool();
@@ -158,15 +161,15 @@ namespace SchetsEditor
                 Point beginpunt = new Point(int.Parse(r[1]), int.Parse(r[2]));
                 Point eindpunt = new Point(int.Parse(r[3]), int.Parse(r[4]));
                 Brush brush = new SolidBrush(Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
+                Console.WriteLine("De brush is" +brush + " met color: "+ Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
                 Console.WriteLine(tool.ToString() + " " + beginpunt + " " + eindpunt + " " + brush);
                 schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush));
-                schetscontrol.TekenBitmapOpnieuw();
+                schetscontrol.TekenBitmapOpnieuw(); Console.WriteLine("TekenBitMapOpnieuw Succes voor nummer: " + n);
             }    
 
         }
         public SchetsWin()
         {
-
             ISchetsTool[] deTools = { new PenTool() 
                                     , new LijnTool()
                                     , new RechthoekTool()
@@ -187,6 +190,7 @@ namespace SchetsEditor
             schetscontrol = new SchetsControl();
             schetscontrol.Location = new Point(64, 10);
             schets = schetscontrol.Schets; //New!
+            schets.Changed = false; //new
             this.FormClosing += afsluitenx; //NEW!
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
                                        {   vast=true;  
@@ -223,8 +227,10 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
-            menu.DropDownItems.Add("Opslaan als..", null, this.opslaanals);  //New!
             menu.DropDownItems.Add("Opslaan", null, this.opslaan); //NEW!
+            menu.DropDownItems.Add("Opslaan als..", null, this.opslaanals);  //New!
+            (menu.DropDownItems[1] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.S);
+            (menu.DropDownItems[2] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Shift | Keys.S);
             menuStrip.Items.Add(menu);
         }
 
@@ -247,12 +253,15 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
             
             //ToolStripDropDownButton Undo = new ToolStripDropDownButton("Undo",null,schetscontrol.Undo);
-            
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
             menu.DropDownItems.Add("Kleur", null, schetscontrol.VeranderKleur);
             menu.DropDownItems.Add("Undo", null, schetscontrol.Undo);
             menu.DropDownItems.Add("Redo", null, schetscontrol.Redo);
+            (menu.DropDownItems[3] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Z);
+            (menu.DropDownItems[4] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Y);
+            
+
             //ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
             //foreach (string k in kleuren)
               //  submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
