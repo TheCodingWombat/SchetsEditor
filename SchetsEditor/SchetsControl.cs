@@ -43,7 +43,7 @@ namespace SchetsEditor
         {
         }
         private void teken(object o, PaintEventArgs pea)
-        {   schets.Teken(pea.Graphics); 
+        {  schets.Teken(pea.Graphics); 
            if(tekenElementen.Count > countteken && undoElementen.Count == countundo) {undoElementen.Clear();}
            if(tekenElementen.Count == 0){schets.Changed = false;}
            countteken = tekenElementen.Count; countundo = undoElementen.Count;
@@ -59,36 +59,25 @@ namespace SchetsEditor
         }
 
         public void TekenBitmapOpnieuw()
-        {
-            //Console.WriteLine("tesdft");
-            schets.Schoon();
+        {   schets.Schoon();
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
-                //Console.WriteLine("TBO:Redrawing element" + e.tool.ToString() + " met " + e.kwast);
-                //if(e.tool.ToString() != "tekst")
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
-                //else Tools.TekstTool.MaakLetter(this, MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
+                //implementatie van tekst nog nodig...
             }
             
         }
         public void Undo(object o, EventArgs ea)
         {
             if(tekenElementen.Count >= 1)
-                {
                 foreach (TekenElement e in tekenElementen)
-                    {
-                         //Console.WriteLine("Testing foreach");                                    
-                    if(tekenElementen.IndexOf(e) == tekenElementen.Count -1)
+                        if(tekenElementen.IndexOf(e) == tekenElementen.Count -1)
                         {
                             undoElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));
                             tekenElementen.RemoveAt(tekenElementen.Count - 1);
                             break;
-                        } // :)
-                    }
-                }
-            Console.WriteLine("TekenElementenCount: "+tekenElementen.Count);
-            Console.WriteLine("UndoElementenCount: "+undoElementen.Count);
+                        } 
             TekenBitmapOpnieuw();
         }
         public void Redo(object o, EventArgs ea)
@@ -101,8 +90,6 @@ namespace SchetsEditor
                         undoElementen.RemoveAt(undoElementen.Count - 1);
                         break;
                         }
-            Console.WriteLine("TekenElementenCount: "+tekenElementen.Count);
-            Console.WriteLine("UndoElementenCount: "+undoElementen.Count);
             TekenBitmapOpnieuw();
         }
         public void Schoon(object o, EventArgs ea)
