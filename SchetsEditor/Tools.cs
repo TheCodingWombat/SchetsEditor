@@ -182,15 +182,25 @@ namespace SchetsEditor
             for (int i = tekenElementen.Count - 1; i >= 0; i--)
             {
                 TekenElement e = ((TekenElement)tekenElementen[i]);
-                if (e.Contains(startpunt))
-                {
-                    tekenElementen.Remove(e); 
-                    i++;
-                    s.TekenBitmapOpnieuw(); 
-                    break;
+                if (Gum(tekenElementen, e, i) != i) break;
 
+            }
+        }
+
+        private int Gum(ArrayList tekenElementen, TekenElement e, int i)
+        {
+            if (i == -1) return -1;
+            if (e.Contains(startpunt))
+            {
+                tekenElementen.Remove(e);
+                s.TekenBitmapOpnieuw();
+                if (i == 0) return -1;
+                if (e.tool.ToString() == "pen" && ((TekenElement)tekenElementen[i - 1]).tool.ToString() == "pen")
+                {
+                    i = Gum(tekenElementen, ((TekenElement)tekenElementen[i - 1]), i - 1);
                 }
             }
+            return i;
         }
 
         public override string ToString() { return "gum"; }
