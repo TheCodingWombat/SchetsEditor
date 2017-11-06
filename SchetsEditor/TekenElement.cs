@@ -23,9 +23,7 @@ namespace SchetsEditor
             switch (tool.ToString())
             {
                 case "vlak":
-                    TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
-                    Rectangle myRectangle = TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt);
-                    return myRectangle.Contains(p);
+                    return TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt).Contains(p);
                 case "rondje":
                     if(berekenEllipse(p) <= 1.1)
                         return true;
@@ -52,7 +50,6 @@ namespace SchetsEditor
                     if(berekenLijn(p)<25 && berekenLijn(p) > -25) 
                         return true;
                     return false;
-                
                 default:
                     return false;
             }
