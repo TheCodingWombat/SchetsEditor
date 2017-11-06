@@ -6,9 +6,9 @@ namespace SchetsEditor
 {
     class TekenElement
     {
-        private Point beginPunt, eindPunt;
-        private Brush kwast; 
-        private ISchetsTool tool;
+        public Point beginPunt, eindPunt;
+        public Brush kwast; //moet allemaal nog private worden
+        public ISchetsTool tool;
 
         public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast)
         {
