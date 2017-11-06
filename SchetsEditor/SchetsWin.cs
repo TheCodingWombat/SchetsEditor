@@ -17,11 +17,11 @@ namespace SchetsEditor
         ISchetsTool huidigeTool;
         Panel paneel;
         bool vast;
-        public Schets schets; //New!
-        string Tekst;           //New!
-        public string Bestandsnaam = "";       //New!
-        int formaat;            //New!!
-        public int Opslagformaat;       //New!
+        public Schets schets; 
+        string Tekst;          
+        public string Bestandsnaam = "";       
+        int formaat;          
+        public int Opslagformaat;       
         ResourceManager resourcemanager
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
@@ -45,28 +45,28 @@ namespace SchetsEditor
         {
             this.huidigeTool = (ISchetsTool)((RadioButton)obj).Tag;
         }
-        private bool vraagafsluiten() //NEW
+        private bool vraagafsluiten()
         {
             DialogResult antwoord = MessageBox.Show("Weet u het zeker? \nEr zijn onopgeslagen wijzigingen aangebracht!", 
                 "Zeker weten?", MessageBoxButtons.OKCancel);
             if (antwoord == DialogResult.OK) { return true; }
             else { return false; }  
         }
-        public void afsluiten(object sender, EventArgs e) // NEW
+        public void afsluiten(object sender, EventArgs e) 
         {
             if (schets.Changed)
                 if (vraagafsluiten())
                     this.Close();
             else { this.Close(); }
         }
-        private void afsluitenx(object sender, FormClosingEventArgs e) //NEW
+        private void afsluitenx(object sender, FormClosingEventArgs e) 
         {
             if (schets.Changed)
                 if (!vraagafsluiten())
                     e.Cancel = true;
             else { }
         }
-        private void opslaanals(object obj, EventArgs ea) //New method!
+        private void opslaanals(object obj, EventArgs ea) 
         {
             SaveFileDialog dialoog = new SaveFileDialog();
             dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.txt|Alle files|*.*";
@@ -75,77 +75,65 @@ namespace SchetsEditor
             {
                 Bitmap saved = new Bitmap(schets.Bitmap);
                 this.Tekst = dialoog.FileName;
-                Console.WriteLine(Path.GetExtension(this.Tekst).ToLower());
-                Console.WriteLine(dialoog.FilterIndex + "dialoog.FilterIndex");
                 formaat = dialoog.FilterIndex;
                 schrijfNaarFile(saved);
                 Bestandsnaam = this.Tekst;
             }
         }
-        public int OpslagFormaat //New Method!
+        public int OpslagFormaat 
         {
             set { Opslagformaat = value;}
         }
-        private void opslaan(object obj, EventArgs ea) //New method!
+        private void opslaan(object obj, EventArgs ea) 
         {
-            if (Bestandsnaam != "") { this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); formaat = Opslagformaat;  schrijfNaarFile(saved); }
-            else opslaanals(obj, ea);
+            if (Bestandsnaam != "") 
+            { 
+                this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); 
+                schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); 
+                formaat = Opslagformaat;  schrijfNaarFile(saved); 
+            }
+            else 
+                opslaanals(obj, ea);
         }
-        private void schrijfNaarFile(Bitmap Saved)      //New method!
+        private void schrijfNaarFile(Bitmap Saved)      
         {
-            //MemoryStream writer = new MemoryStream(); //Voor opslaan als naar bitmap die weer te gebruiken is ... punt 5 ofzo
-            Console.WriteLine(this.Tekst);
-            Console.WriteLine("formaat:" + formaat);
-            Console.WriteLine(formaat);
             switch (formaat)
             {
                 case 1:
                     Saved.Save(this.Tekst, ImageFormat.Png);
-                    Console.WriteLine("PNG!");
                     break;
                 case 2:
                     Saved.Save(this.Tekst, ImageFormat.Jpeg);
-                    Console.WriteLine("JPG!");
                     break;
                 case 3:
                     Saved.Save(this.Tekst, ImageFormat.Bmp);
-                    Console.WriteLine("BMP!");
                     break;
                 case 4:
-                    Console.WriteLine("JSON!"); schrijfNaarJson(); Console.WriteLine("JSON!");
+                    schrijfNaarJson();
                     break;
                 case 5:
                     Saved.Save(this.Tekst);
-                    Console.WriteLine("ALLE FILES");
                     break;
             }
             schets.Changed = false;
-            //writer.Close();
         }
         private void schrijfNaarJson()
         {
-            Console.WriteLine("Schrijf naar JSON");
-            
             ArrayList elementen = schetscontrol.TekenElementen;
             StreamWriter writer= new StreamWriter(this.Tekst);
-            foreach(TekenElement e in elementen){
-                Console.WriteLine(new Pen(e.kwast).Color.R);
-
-                    writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " " + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B);
-                //writer.WriteLine("Mission failed!");
-            }
+            foreach(TekenElement e in elementen)
+                    writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " "
+                        + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B);
             writer.Close();
         }
         public void OpenJson(string File)
         {
-            int n = 0; //
             string regel;
             StreamReader sr = new StreamReader(File);
             schetscontrol.TekenElementen = null;
             schetscontrol.TekenElementen = new ArrayList();
             while((regel = sr.ReadLine()) != null)
             {
-                n++;
                 string [] r = regel.Split(' ');
                 ISchetsTool tool;
                 if(r[0] == "vlak") tool = new VolRechthoekTool();
@@ -156,15 +144,11 @@ namespace SchetsEditor
                 else if(r[0] == "pen") tool = new PenTool();
                 else if(r[0] == "tekst") tool = new TekstTool();
                 else tool = null;
-                
-
                 Point beginpunt = new Point(int.Parse(r[1]), int.Parse(r[2]));
                 Point eindpunt = new Point(int.Parse(r[3]), int.Parse(r[4]));
                 Brush brush = new SolidBrush(Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
-                Console.WriteLine("De brush is" +brush + " met color: "+ Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
-                Console.WriteLine(tool.ToString() + " " + beginpunt + " " + eindpunt + " " + brush);
                 schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush));
-                schetscontrol.TekenBitmapOpnieuw(); Console.WriteLine("TekenBitMapOpnieuw Succes voor nummer: " + n);
+                schetscontrol.TekenBitmapOpnieuw();
             }    
 
         }
@@ -174,24 +158,20 @@ namespace SchetsEditor
                                     , new LijnTool()
                                     , new RechthoekTool()
                                     , new VolRechthoekTool()
-                                    , new CirkelTool() //
-                                    , new VolCirkelTool() //
+                                    , new CirkelTool() 
+                                    , new VolCirkelTool() 
                                     , new TekstTool()
                                     , new GumTool()
                                     };
-
-           // String[] deKleuren = { "Black", "Red", "Green", "Blue"
-             //                    , "Yellow", "Magenta", "Cyan" 
-               //                  };
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
 
             schetscontrol = new SchetsControl();
             schetscontrol.Location = new Point(64, 10);
-            schets = schetscontrol.Schets; //New!
-            schets.Changed = false; //new
-            this.FormClosing += afsluitenx; //NEW!
+            schets = schetscontrol.Schets; 
+            schets.Changed = false; 
+            this.FormClosing += afsluitenx; 
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
                                        {   vast=true;  
                                            huidigeTool.MuisVast(schetscontrol, mea.Location); 
@@ -215,9 +195,9 @@ namespace SchetsEditor
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakToolMenu(deTools);
-            this.maakAktieMenu(); //:)
+            this.maakAktieMenu(); 
             this.maakToolButtons(deTools);
-            this.maakAktieButtons(); // :)
+            this.maakAktieButtons(); 
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
@@ -227,8 +207,8 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
-            menu.DropDownItems.Add("Opslaan", null, this.opslaan); //NEW!
-            menu.DropDownItems.Add("Opslaan als..", null, this.opslaanals);  //New!
+            menu.DropDownItems.Add("Opslaan", null, this.opslaan); 
+            menu.DropDownItems.Add("Opslaan als..", null, this.opslaanals);  
             (menu.DropDownItems[1] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.S);
             (menu.DropDownItems[2] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Shift | Keys.S);
             menuStrip.Items.Add(menu);
@@ -251,8 +231,6 @@ namespace SchetsEditor
         private void maakAktieMenu()
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
-            
-            //ToolStripDropDownButton Undo = new ToolStripDropDownButton("Undo",null,schetscontrol.Undo);
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
             menu.DropDownItems.Add("Kleur", null, schetscontrol.VeranderKleur);
@@ -260,12 +238,6 @@ namespace SchetsEditor
             menu.DropDownItems.Add("Redo", null, schetscontrol.Redo);
             (menu.DropDownItems[3] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Z);
             (menu.DropDownItems[4] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.Y);
-            
-
-            //ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
-            //foreach (string k in kleuren)
-              //  submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
-            //menu.DropDownItems.Add(submenu);
             menuStrip.Items.Add(menu);
         }
 
@@ -296,7 +268,7 @@ namespace SchetsEditor
             paneel.Size = new Size(600, 24);
             this.Controls.Add(paneel);
             
-            Button b; //Label l; ComboBox cbb;
+            Button b;
             b = new Button(); 
             b.Text = "Clear";  
             b.Location = new Point(  0, 0); 
@@ -309,23 +281,11 @@ namespace SchetsEditor
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
             
-            //l = new Label();  
-            //l.Text = "Penkleur:"; 
-            //l.Location = new Point(180, 3); 
-            //l.AutoSize = true;               
-            //paneel.Controls.Add(l);
-            
             b = new Button(); b.Location = new Point(160, 0);
             b.Text = "Kleur";
             b.Click += schetscontrol.VeranderKleur;
             paneel.Controls.Add(b);
-            //cbb = new ComboBox(); cbb.Location = new Point(240, 0); //dit zal een button worden
-            //cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
-            //cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
-            //foreach (string k in kleuren)
-              //  cbb.Items.Add(k);
-            //cbb.SelectedIndex = 0;
-            //paneel.Controls.Add(cbb);
+
             b = new Button(); b.Location = new Point(240, 0);
             b.Text = "Undo teken";
             b.Click += schetscontrol.Undo;

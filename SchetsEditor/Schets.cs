@@ -6,8 +6,8 @@ namespace SchetsEditor
 {
     public class Schets
     {
-        public Bitmap bitmap;      //Nu public en static!
-        private bool changed;        //New!
+        Bitmap bitmap;      
+        private bool changed;        
         
         public Schets()
         {
@@ -18,7 +18,7 @@ namespace SchetsEditor
         {
             get { return Graphics.FromImage(bitmap); }
         }
-        public bool Changed         //New!
+        public bool Changed         
         {
             get { return changed; }
             set { changed = value;}
@@ -40,24 +40,23 @@ namespace SchetsEditor
                 gr.DrawImage(bitmap, 0, 0);
                 bitmap = nieuw;
             }
-            //changed = true; //Console.WriteLine("Verander afmeting changed");//New!
+            
         }
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            changed = true; //Console.WriteLine("Teken changed");//New! 
-            //Console.WriteLine("Teken in schets.cs, changed:"+changed);
+            changed = true; 
         }
         public virtual void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-            changed = true; //Console.WriteLine("Schoon changed");//New!
+            changed = true; 
         }
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            changed = true; //Console.WriteLine("Roteer changed"); //New!
+            changed = true; 
         }
     }
 }

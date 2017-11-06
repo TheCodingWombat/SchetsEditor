@@ -8,7 +8,7 @@ namespace SchetsEditor
     public class Hoofdscherm : Form
     {
         MenuStrip menuStrip;
-        SchetsWin s; //New!
+        SchetsWin s; 
 
         public Hoofdscherm()
         {   this.ClientSize = new Size(800, 600);
@@ -24,7 +24,7 @@ namespace SchetsEditor
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
-            menu.DropDownItems.Add("Openen..", null, this.open);  //New!
+            menu.DropDownItems.Add("Openen..", null, this.open);  
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
             (menu.DropDownItems[0] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.N);
             (menu.DropDownItems[1] as ToolStripMenuItem).ShortcutKeys = (Keys)(Keys.Control | Keys.O);
@@ -45,16 +45,16 @@ namespace SchetsEditor
         }
 
         private void nieuw(object sender, EventArgs e)
-        {   s = new SchetsWin();                //Er stond: SchetsWin s = new SchetsWin(); !
+        {   s = new SchetsWin();               
             s.MdiParent = this;
             s.Show();
             s.schets.Changed = false; Console.WriteLine("Falsed");
         }
         private void afsluiten(object sender, EventArgs e) 
         {
-            this.Close(); s = null; //Er stond alleen close!
+            this.Close(); s = null; 
         }
-        private void open(object obj, EventArgs ea)     //New!
+        private void open(object obj, EventArgs ea)     
         {
             OpenFileDialog dialoog = new OpenFileDialog();
             dialoog.Filter = "Png|*.png|Jpeg|*.jpeg|Bmp|*.bmp|Project File|*.txt|Alle files|*.*";
@@ -69,10 +69,9 @@ namespace SchetsEditor
                     case 5:
                         if(s != null) s.afsluiten(obj, ea);
                         nieuw(obj, ea);
-                        s.schets.bitmap = new Bitmap(dialoog.FileName, true);
+                        s.schets.Bitmap = new Bitmap(dialoog.FileName, true);
                         s.Bestandsnaam = dialoog.FileName;
                         s.OpslagFormaat = dialoog.FilterIndex -1;
-                        Console.WriteLine("open formaat:"+Path.GetExtension(dialoog.FileName).ToLower());
                         break;
                     case 4:
                         if(s != null) s.afsluiten(obj, ea);
