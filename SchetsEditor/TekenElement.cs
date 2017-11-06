@@ -31,7 +31,8 @@ namespace SchetsEditor
                         return true;
                     return false;
                 case "lijn": 
-                    if(berekenLijn(p)<100) return true;
+                   if(berekenLijn(p)<25 && berekenLijn(p) > -25) 
+                        return true;
                     return false;
                 case "cirkel":
                     if(berekenEllipse(p) < 1.5 && berekenEllipse(p) > 0.5 )
@@ -48,7 +49,7 @@ namespace SchetsEditor
                         return true;
                     return false;
                 case "pen": 
-                    if(berekenLijn(p)<100) 
+                    if(berekenLijn(p)<25 && berekenLijn(p) > -25) 
                         return true;
                     return false;
                 
@@ -62,11 +63,12 @@ namespace SchetsEditor
             double py = eindPunt.Y - beginPunt.Y;
             double u = ((p.X - beginPunt.X)*px + (p.Y-beginPunt.Y)*py)/(px*px + py*py);
             if(u > 1) u = 1;
+            if(u < 0) u = 0;
             double x = beginPunt.X + u*px;
             double y = beginPunt.Y + u*py;
             double dx = x - p.X;
             double dy = y - p.Y;
-            return (dx*dx + dy*dy);
+            return ((dx*dx + dy*dy));
         }
         private double berekenEllipse(Point p)
         {   //Met behulp van https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
