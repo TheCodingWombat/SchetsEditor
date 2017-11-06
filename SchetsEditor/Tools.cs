@@ -18,20 +18,20 @@ namespace SchetsEditor
     {
         protected Point startpunt;
         protected Brush kwast;
-        protected SchetsControl s; //NIEUW
+        protected SchetsControl s; 
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
             this.s = s;
         }
         public virtual void MuisLos(SchetsControl s, Point p)
-        {   kwast = new SolidBrush(s.PenKleur); Console.WriteLine(s.PenKleur);
+        {   kwast = new SolidBrush(s.PenKleur); 
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
 
         public virtual void Compleet(Graphics g, Point p1, Point p2, Brush kwast) { }
-        public virtual void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) { }
+        public virtual void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) { } //TODO: verander implementatie
     }
 
     public class TekstTool : StartpuntTool
@@ -40,7 +40,7 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p) { }
 
-        public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast)
+        public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) //TODO: verandering implementatie
         {
             this.startpunt = p1;
             char c = (char)(p2.X);
@@ -61,7 +61,7 @@ namespace SchetsEditor
                                               this.startpunt, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 startpunt.X += (int)sz.Width;
-                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point((int)c,0), kwast));
+                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point((int)c,0), kwast)); //TODO: verander implementatie
                 s.Invalidate();
             }
         }
@@ -91,7 +91,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p, kwast);
-            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast)); Console.WriteLine(kwast);
+            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast)); 
             s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)
@@ -110,27 +110,21 @@ namespace SchetsEditor
         public override string ToString() { return "kader"; }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
-        {   Console.WriteLine("Drawing kader");
-            g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        {  g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
-        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //Compleet toegevoegd ivm opslaan crash
-        {   Console.WriteLine("Drawing kader");
-            g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //TODO: dit is gekopiëerd moet beter kunnen
+        {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
-    public class CirkelTool : TweepuntTool              //New!
+    public class CirkelTool : TweepuntTool             
     {
         public override string ToString() { return "cirkel"; }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
-        {
-            Console.WriteLine("Drawing cirkel met kwast:" +kwast);
-            g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        {   g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
-        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //Compleet toegevoegd ivm opslaan crash, dit is gekopiëerd moet beter kunnen
-        {
-            Console.WriteLine("Drawing cirkel met kwast:" +kwast);
-            g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //TODO: dit is gekopiëerd moet beter kunnen
+        {   g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
 
@@ -139,19 +133,15 @@ namespace SchetsEditor
         public override string ToString() { return "vlak"; }
 
         public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
-        {
-            Console.WriteLine("drawing vlak");
-            g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        {   g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
-    public class VolCirkelTool : CirkelTool         //New!
+    public class VolCirkelTool : CirkelTool        
     {
         public override string ToString() { return "rondje"; }
 
         public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast)
-        {
-            Console.WriteLine("drawing rondje");
-            g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        {   g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
 
@@ -188,18 +178,15 @@ namespace SchetsEditor
         }
 
         public override void MuisLos(SchetsControl s, Point p)
-        {
-            ArrayList tekenElementen = s.TekenElementen;
-
+        {   ArrayList tekenElementen = s.TekenElementen;
             for (int i = tekenElementen.Count - 1; i >= 0; i--)
             {
                 TekenElement e = ((TekenElement)tekenElementen[i]);
                 if (e.Contains(startpunt))
                 {
-                    Console.WriteLine(i);
-                    tekenElementen.Remove(e); //remove e from TekenElementen
+                    tekenElementen.Remove(e); 
                     i++;
-                    s.TekenBitmapOpnieuw(); //Redraw bitmap from TekenElement ArrayList, en daar zit nu e niet meer in
+                    s.TekenBitmapOpnieuw(); 
                     break;
 
                 }

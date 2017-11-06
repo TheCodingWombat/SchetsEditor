@@ -44,9 +44,12 @@ namespace SchetsEditor
         }
         private void teken(object o, PaintEventArgs pea)
         {  schets.Teken(pea.Graphics); 
-           if(tekenElementen.Count > countteken && undoElementen.Count == countundo) {undoElementen.Clear();}
-           if(tekenElementen.Count == 0){schets.Changed = false;}
-           countteken = tekenElementen.Count; countundo = undoElementen.Count;
+           if(tekenElementen.Count > countteken && undoElementen.Count == countundo) 
+                undoElementen.Clear();
+           if(tekenElementen.Count == 0)
+                    schets.Changed = false;
+           countteken = tekenElementen.Count; 
+           countundo = undoElementen.Count;
         }       
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);
@@ -64,7 +67,7 @@ namespace SchetsEditor
             foreach (TekenElement e in tekenElementen)
             {
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
-                //implementatie van tekst nog nodig...
+                //TODO: implementatie van tekst nog nodig...
             }
             
         }
