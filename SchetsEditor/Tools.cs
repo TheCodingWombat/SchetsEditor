@@ -42,7 +42,6 @@ namespace SchetsEditor
 
         public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) //TODO: verandering implementatie
         {
-            this.startpunt = p1;
             char c = (char)(p2.X);
             this.kwast = kwast;
             Letter(s, c);
@@ -57,11 +56,10 @@ namespace SchetsEditor
                 string tekst = c.ToString();
                 SizeF sz = 
                 gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-                gr.DrawString   (tekst, font, kwast, 
-                                              this.startpunt, StringFormat.GenericTypographic);
-                // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
-                startpunt.X += (int)sz.Width;
-                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point((int)c,0), kwast)); //TODO: verander implementatie
+                //this.startpunt.Y -= (int) sz.Height / 2;
+                gr.DrawString   (tekst, font, kwast,  this.startpunt, StringFormat.GenericTypographic);
+                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point(this.startpunt.X + (int) sz.Width, this.startpunt.Y + (int) sz.Height), kwast, c)); //TODO: verander implementatie
+                this.startpunt.X += (int)sz.Width;
                 s.Invalidate();
             }
         }

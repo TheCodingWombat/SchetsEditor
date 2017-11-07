@@ -9,6 +9,7 @@ namespace SchetsEditor
         public Point beginPunt, eindPunt;
         public Brush kwast; //moet allemaal nog private worden
         public ISchetsTool tool;
+        public char c;
 
         public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast)
         {
@@ -18,10 +19,19 @@ namespace SchetsEditor
             this.tool = tool;
         }
 
+        public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast, Char c) 
+            : this(tool, beginPunt, eindPunt, kwast)
+        {
+            
+            this.c = c;
+        }
+
         public bool Contains(Point p)
         {
             switch (tool.ToString())
             {
+                case "tekst":
+                    return TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt).Contains(p);
                 case "vlak":
                     return TweepuntTool.Punten2Rechthoek(beginPunt, eindPunt).Contains(p);
                 case "rondje":
