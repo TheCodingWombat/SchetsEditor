@@ -202,6 +202,9 @@ namespace SchetsEditor
                 if (e.tool.ToString() == "pen" && ((TekenElement)tekenElementen[i - 1]).tool.ToString() == "pen")
                 {
                     i = Gum(tekenElementen, ((TekenElement)tekenElementen[i - 1]), i - 1);
+                } else
+                {
+                    return -1;
                 }
             }
             return i;
