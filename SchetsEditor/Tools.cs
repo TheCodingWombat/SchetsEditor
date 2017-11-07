@@ -47,6 +47,12 @@ namespace SchetsEditor
             Letter(s, c);
         }
 
+        public void TekenLetterOpnieuw(SchetsControl s, char c, Point startpunt, Brush kwast)
+        {
+            if (c >= 32)
+                s.MaakBitmapGraphics().DrawString(c.ToString(), new Font("Tahoma", 40), kwast, startpunt, StringFormat.GenericTypographic);
+        }
+
         public override void Letter(SchetsControl s, char c)
         {
             if (c >= 32)
@@ -89,7 +95,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p, kwast);
-            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast)); 
+            s.TekenElementen.Add(new TekenElement(this, this.startpunt, p, kwast, (char) 0)); 
             s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)

@@ -66,8 +66,10 @@ namespace SchetsEditor
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
+                if (e.tool.ToString() == "tekst")
+                    ((TekstTool)(e.tool)).TekenLetterOpnieuw(this, e.c, e.beginPunt, e.kwast);
+                else
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
-                //TODO: implementatie van tekst nog nodig...
             }
             
         }
@@ -77,7 +79,7 @@ namespace SchetsEditor
                 foreach (TekenElement e in tekenElementen)
                         if(tekenElementen.IndexOf(e) == tekenElementen.Count -1)
                         {
-                            undoElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));
+                            undoElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast, e.c));
                             tekenElementen.RemoveAt(tekenElementen.Count - 1);
                             break;
                         } 
@@ -89,7 +91,7 @@ namespace SchetsEditor
                 foreach(TekenElement e in undoElementen)
                     if(undoElementen.IndexOf(e) == undoElementen.Count -1)
                         {
-                        tekenElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast));
+                        tekenElementen.Add(new TekenElement(e.tool, e.beginPunt, e.eindPunt, e.kwast, e.c));
                         undoElementen.RemoveAt(undoElementen.Count - 1);
                         break;
                         }

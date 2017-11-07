@@ -123,7 +123,7 @@ namespace SchetsEditor
             StreamWriter writer= new StreamWriter(this.Tekst);
             foreach(TekenElement e in elementen)
                     writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " "
-                        + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B);
+                        + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B + " " + e.c);
             writer.Close();
         }
         public void OpenJson(string File)
@@ -147,7 +147,12 @@ namespace SchetsEditor
                 Point beginpunt = new Point(int.Parse(r[1]), int.Parse(r[2]));
                 Point eindpunt = new Point(int.Parse(r[3]), int.Parse(r[4]));
                 Brush brush = new SolidBrush(Color.FromArgb(int.Parse(r[5]),int.Parse(r[6]),int.Parse(r[7]),int.Parse(r[8])));
-                schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush));
+                char c;
+                if (r[9].Length == 1)
+                    c = char.Parse(r[9]);
+                else
+                    c = (char) 0;
+                schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush, c));
                 schetscontrol.TekenBitmapOpnieuw();
             }    
 

@@ -11,18 +11,12 @@ namespace SchetsEditor
         public ISchetsTool tool;
         public char c;
 
-        public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast)
+        public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast, char c)
         {
             this.beginPunt = beginPunt;
             this.eindPunt = eindPunt;
             this.kwast = kwast;
             this.tool = tool;
-        }
-
-        public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast, Char c) 
-            : this(tool, beginPunt, eindPunt, kwast)
-        {
-            
             this.c = c;
         }
 
