@@ -111,7 +111,7 @@ namespace SchetsEditor
                     Saved.Save(this.Tekst, ImageFormat.Bmp);
                     break;
                 case 4:
-                    schrijfNaarJson();
+                    schrijfNaarTxt();
                     break;
                 case 5:
                     Saved.Save(this.Tekst);
@@ -120,7 +120,7 @@ namespace SchetsEditor
             schetscontrol.TekenBitmapOpnieuw();
             schets.Changed = false;
         }
-        private void schrijfNaarJson()
+        private void schrijfNaarTxt()
         {
             ArrayList elementen = schetscontrol.TekenElementen;
             StreamWriter writer = new StreamWriter(this.Tekst);
@@ -129,7 +129,7 @@ namespace SchetsEditor
                         + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B + " " + e.c + " " + e.rotatie);
             writer.Close();
         }
-        public void OpenJson(string File)
+        public void OpenTxt(string File)
         {
             string regel;
             StreamReader sr = new StreamReader(File);
@@ -160,6 +160,7 @@ namespace SchetsEditor
                 schetscontrol.TekenBitmapOpnieuw(); 
             }    
             sr.Close();
+            schets.Saved = true;
 
         }
         public SchetsWin()

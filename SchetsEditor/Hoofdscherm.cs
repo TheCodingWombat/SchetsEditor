@@ -78,7 +78,7 @@ namespace SchetsEditor
                         nieuw(obj, ea);
                         s.Bestandsnaam = dialoog.FileName;
                         s.OpslagFormaat = dialoog.FilterIndex;
-                        s.OpenJson(dialoog.FileName);
+                        s.OpenTxt(dialoog.FileName);
                         break;
                 }
             }

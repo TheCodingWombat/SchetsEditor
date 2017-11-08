@@ -113,30 +113,25 @@ namespace SchetsEditor
             foreach (TekenElement e in tekenElementen)
             {
                 Point newbegin, neweind;
-                //Console.WriteLine(e.beginPunt + ", " + e.eindPunt);
-                //Console.WriteLine("berken(beginpunt): " + BerekenRotatie(e.beginPunt));
                 newbegin = BerekenRotatie(new Point(e.beginPunt.X - (ClientSize.Width/2), e.beginPunt.Y - (ClientSize.Height/2)));
-                e.beginPunt.X = newbegin.X + (ClientSize.Width / 2); //Console.WriteLine(newbegin.X + (ClientSize.Width / 2));
-                e.beginPunt.Y = newbegin.Y + (ClientSize.Height / 2); //Console.WriteLine(newbegin.Y + (ClientSize.Height / 2));
+                e.beginPunt.X = newbegin.X + (ClientSize.Width / 2);
+                e.beginPunt.Y = newbegin.Y + (ClientSize.Height / 2); 
                 neweind = BerekenRotatie(new Point(e.eindPunt.X - (ClientSize.Width/2), e.eindPunt.Y - (ClientSize.Height/2)));
-                e.eindPunt.X = neweind.X + (ClientSize.Width / 2); //Console.WriteLine(neweind.X + (ClientSize.Width / 2));
-                e.eindPunt.Y = neweind.Y + (ClientSize.Height / 2); //Console.WriteLine(neweind.Y + (ClientSize.Height / 2));
+                e.eindPunt.X = neweind.X + (ClientSize.Width / 2); 
+                e.eindPunt.Y = neweind.Y + (ClientSize.Height / 2); 
                 e.rotatie = (e.rotatie + 90) % 360;
             }
             TekenBitmapOpnieuw();
+            schets.Changed = true;
             this.Invalidate();
         }
         private Point BerekenRotatie(Point e)
         {
             int newX, newY;
             Point newPoint = new Point(0, 0);
-            //Console.WriteLine("old:(" + e.X + ", " + e.Y + ")");
-            //Console.WriteLine("Math.Cos((Math.PI / 2)) = " + (int)Math.Cos((Math.PI / 2)));
-            //Console.WriteLine("Math.Sin((Math.PI / 2)) = " + (int)Math.Sin((Math.PI / 2)));
             newX = e.X * (int)Math.Cos((Math.PI / 2)) - e.Y * (int)Math.Sin((Math.PI / 2));
             newY = e.X * (int)Math.Sin((Math.PI / 2)) + e.Y * (int)Math.Cos((Math.PI / 2));
             newPoint.X = newX; newPoint.Y = newY;
-            //Console.WriteLine("new:(" + newX + ", " + newY + ")");
             return newPoint;
         }
         public void VeranderKleur(object obj, EventArgs ea)

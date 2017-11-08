@@ -57,10 +57,5 @@ namespace SchetsEditor
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
             changed = true; 
         }
-        public void Roteer()
-        {
-            bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            changed = true; 
-        }
     }
 }

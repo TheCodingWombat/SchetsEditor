@@ -7,7 +7,7 @@ namespace SchetsEditor
     class TekenElement
     {
         public Point beginPunt, eindPunt;
-        public Brush kwast; //moet allemaal nog private worden
+        public Brush kwast; 
         public ISchetsTool tool;
         public char c;
         public int rotatie = 0;

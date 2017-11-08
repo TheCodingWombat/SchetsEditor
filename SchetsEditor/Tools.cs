@@ -31,7 +31,7 @@ namespace SchetsEditor
         public abstract void Letter(SchetsControl s, char c);
 
         public virtual void Compleet(Graphics g, Point p1, Point p2, Brush kwast) { }
-        public virtual void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) { } //TODO: verander implementatie
+        public virtual void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) { } 
     }
 
     public class TekstTool : StartpuntTool
@@ -40,7 +40,7 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p) { }
 
-        public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) //TODO: verandering implementatie
+        public override void MaakLetter(SchetsControl s, Graphics g, Point p1, Point p2, Brush kwast) 
         {
             char c = (char)(p2.X);
             this.kwast = kwast;
@@ -75,9 +75,8 @@ namespace SchetsEditor
                 string tekst = c.ToString();
                 SizeF sz = 
                 gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-                //this.startpunt.Y -= (int) sz.Height / 2;
                 gr.DrawString   (tekst, font, kwast,  this.startpunt, StringFormat.GenericTypographic);
-                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point(this.startpunt.X + (int) sz.Width, this.startpunt.Y + (int) sz.Height), kwast, c)); //TODO: verander implementatie
+                s.TekenElementen.Add(new TekenElement(this, this.startpunt, new Point(this.startpunt.X + (int) sz.Width, this.startpunt.Y + (int) sz.Height), kwast, c)); 
                 this.startpunt.X += (int)sz.Width;
                 s.Invalidate();
             }
@@ -129,7 +128,7 @@ namespace SchetsEditor
         public override void Bezig(Graphics g, Point p1, Point p2)
         {  g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
-        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //TODO: dit is gekopiëerd moet beter kunnen
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) 
         {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
@@ -140,7 +139,7 @@ namespace SchetsEditor
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
-        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) //TODO: dit is gekopiëerd moet beter kunnen
+        public override void Compleet(Graphics g, Point p1, Point p2, Brush kwast) 
         {   g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
