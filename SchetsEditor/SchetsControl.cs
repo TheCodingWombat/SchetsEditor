@@ -9,6 +9,7 @@ namespace SchetsEditor
     {   private Schets schets;
         private Color penkleur;
         private int countteken, countundo;
+        
 
 
         private ArrayList tekenElementen = new ArrayList();
@@ -18,7 +19,6 @@ namespace SchetsEditor
         {
             get
             {
-                Console.WriteLine(tekenElementen.Count);
                 return tekenElementen;
             }
             set { tekenElementen = value; }
@@ -44,10 +44,12 @@ namespace SchetsEditor
         }
         private void teken(object o, PaintEventArgs pea)
         {  schets.Teken(pea.Graphics); 
-           if(tekenElementen.Count > countteken && undoElementen.Count == countundo) 
-                undoElementen.Clear();
-           if(tekenElementen.Count == 0)
-                    schets.Changed = false;
+           if(tekenElementen.Count == 0 || schets.Saved == true)
+           {
+                schets.Changed = false; schets.Saved = false;
+           }
+           else if(tekenElementen.Count > countteken && undoElementen.Count == countundo) 
+                    undoElementen.Clear(); schets.Saved = false;
            countteken = tekenElementen.Count; 
            countundo = undoElementen.Count;
         }       
@@ -62,7 +64,9 @@ namespace SchetsEditor
         }
 
         public void TekenBitmapOpnieuw()
-        {   schets.Schoon();
+        {   schets.Bitmap = new Bitmap(1,1);
+            schets.VeranderAfmeting(new Size(this.ClientSize.Width, this.ClientSize.Height ));
+            schets.Schoon();
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
@@ -71,6 +75,7 @@ namespace SchetsEditor
                 else
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
             }
+
             
         }
         public void Undo(object o, EventArgs ea)
@@ -103,9 +108,37 @@ namespace SchetsEditor
             this.Invalidate();
         }
         public void Roteer(object o, EventArgs ea)
-        {   schets.VeranderAfmeting(new Size(this.ClientSize.Height, this.ClientSize.Width));
-            schets.Roteer();
+        {
+            schets.VeranderAfmeting(new Size(this.ClientSize.Height, this.ClientSize.Width));
+            //Console.WriteLine("Roteer"); schets.Roteer();
+            //ArrayList RotatieElementen = new ArrayList();
+            foreach (TekenElement e in tekenElementen)
+            {
+                Point newbegin, neweind;
+                Console.WriteLine(e.beginPunt + ", " + e.eindPunt);
+                Console.WriteLine("berken(beginpunt): " + BerekenRotatie(e.beginPunt));
+                newbegin = BerekenRotatie(new Point(e.beginPunt.X - (ClientSize.Width/2), e.beginPunt.Y - (ClientSize.Height/2)));
+                e.beginPunt.X = newbegin.X + (ClientSize.Width / 2); Console.WriteLine(newbegin.X + (ClientSize.Width / 2));
+                e.beginPunt.Y = newbegin.Y + (ClientSize.Height / 2); Console.WriteLine(newbegin.Y + (ClientSize.Height / 2));
+                neweind = BerekenRotatie(new Point(e.eindPunt.X - (ClientSize.Width/2), e.eindPunt.Y - (ClientSize.Height/2)));
+                e.eindPunt.X = neweind.X + (ClientSize.Width / 2); Console.WriteLine(neweind.X + (ClientSize.Width / 2));
+                e.eindPunt.Y = neweind.Y + (ClientSize.Height / 2); Console.WriteLine(neweind.Y + (ClientSize.Height / 2));
+            }
+            TekenBitmapOpnieuw();
             this.Invalidate();
+        }
+        private Point BerekenRotatie(Point e)
+        {
+            int newX, newY;
+            Point newPoint = new Point(0, 0);
+            Console.WriteLine("old:(" + e.X + ", " + e.Y + ")");
+            Console.WriteLine("Math.Cos((Math.PI / 2)) = " + (int)Math.Cos((Math.PI / 2)));
+            Console.WriteLine("Math.Sin((Math.PI / 2)) = " + (int)Math.Sin((Math.PI / 2)));
+            newX = e.X * (int)Math.Cos((Math.PI / 2)) - e.Y * (int)Math.Sin((Math.PI / 2));
+            newY = e.X * (int)Math.Sin((Math.PI / 2)) + e.Y * (int)Math.Cos((Math.PI / 2));
+            newPoint.X = newX; newPoint.Y = newY;
+            Console.WriteLine("new:(" + newX + ", " + newY + ")");
+            return newPoint;
         }
         public void VeranderKleur(object obj, EventArgs ea)
         {   ColorDialog dialoog = new ColorDialog();

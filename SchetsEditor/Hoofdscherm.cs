@@ -48,7 +48,7 @@ namespace SchetsEditor
         {   s = new SchetsWin();               
             s.MdiParent = this;
             s.Show();
-            s.schets.Changed = false; Console.WriteLine("Falsed");
+            s.schets.Changed = false; 
         }
         private void afsluiten(object sender, EventArgs e) 
         {
@@ -76,6 +76,8 @@ namespace SchetsEditor
                     case 4:
                         if(s != null) s.afsluiten(obj, ea);
                         nieuw(obj, ea);
+                        s.Bestandsnaam = dialoog.FileName;
+                        s.OpslagFormaat = dialoog.FilterIndex;
                         s.OpenJson(dialoog.FileName);
                         break;
                 }
