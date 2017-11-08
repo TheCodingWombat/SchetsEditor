@@ -10,6 +10,7 @@ namespace SchetsEditor
         public Brush kwast; //moet allemaal nog private worden
         public ISchetsTool tool;
         public char c;
+        public int rotatie = 0;
 
         public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast, char c)
         {
@@ -18,6 +19,12 @@ namespace SchetsEditor
             this.kwast = kwast;
             this.tool = tool;
             this.c = c;
+        }
+
+        public TekenElement(ISchetsTool tool, Point beginPunt, Point eindPunt, Brush kwast, char c, int rotatie)
+            : this(tool, beginPunt, eindPunt, kwast, c)
+        {
+            this.rotatie = rotatie;
         }
 
         public bool Contains(Point p)

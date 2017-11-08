@@ -47,10 +47,23 @@ namespace SchetsEditor
             Letter(s, c);
         }
 
-        public void TekenLetterOpnieuw(SchetsControl s, char c, Point startpunt, Brush kwast)
+        public void TekenLetterOpnieuw(SchetsControl s, char c, Point startpunt, Brush kwast, int rotatie)
         {
             if (c >= 32)
-                s.MaakBitmapGraphics().DrawString(c.ToString(), new Font("Tahoma", 40), kwast, startpunt, StringFormat.GenericTypographic);
+            {
+                Graphics g = s.MaakBitmapGraphics();
+
+                g.Transform = RoteerOmPunt(rotatie, startpunt);
+                g.DrawString(c.ToString(), new Font("Tahoma", 40), kwast, startpunt, StringFormat.GenericTypographic);
+                g.ResetTransform();
+            }
+        }
+
+        private Matrix RoteerOmPunt(float rotatie, Point p)
+        {
+            Matrix m = new Matrix();
+            m.RotateAt(rotatie, p);
+            return m;
         }
 
         public override void Letter(SchetsControl s, char c)
