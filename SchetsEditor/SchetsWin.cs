@@ -78,6 +78,7 @@ namespace SchetsEditor
                 formaat = dialoog.FilterIndex;
                 schrijfNaarFile(saved);
                 Bestandsnaam = this.Tekst;
+                schets.Saved = true;
             }
         }
         public int OpslagFormaat 
@@ -89,11 +90,12 @@ namespace SchetsEditor
             if (Bestandsnaam != "") 
             { 
                 this.Tekst = Bestandsnaam; Bitmap saved = new Bitmap(schets.Bitmap); 
-                schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst); 
+                schets.Bitmap.Dispose(); System.IO.File.Delete(this.Tekst);
                 formaat = Opslagformaat;  schrijfNaarFile(saved); 
             }
             else 
                 opslaanals(obj, ea);
+            schets.Saved = true;
         }
         private void schrijfNaarFile(Bitmap Saved)      
         {
@@ -115,12 +117,13 @@ namespace SchetsEditor
                     Saved.Save(this.Tekst);
                     break;
             }
+            schetscontrol.TekenBitmapOpnieuw();
             schets.Changed = false;
         }
         private void schrijfNaarJson()
         {
             ArrayList elementen = schetscontrol.TekenElementen;
-            StreamWriter writer= new StreamWriter(this.Tekst);
+            StreamWriter sr= new StreamWriter(this.Tekst);
             foreach(TekenElement e in elementen)
                     writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " "
                         + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B + " " + e.c);
@@ -153,8 +156,9 @@ namespace SchetsEditor
                 else
                     c = (char) 0;
                 schetscontrol.TekenElementen.Add(new TekenElement(tool, beginpunt, eindpunt, brush, c));
-                schetscontrol.TekenBitmapOpnieuw();
+                schetscontrol.TekenBitmapOpnieuw(); 
             }    
+            sr.Close();
 
         }
         public SchetsWin()

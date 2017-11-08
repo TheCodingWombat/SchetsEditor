@@ -7,7 +7,7 @@ namespace SchetsEditor
     public class Schets
     {
         Bitmap bitmap;      
-        private bool changed;        
+        private bool changed, saved;        
         
         public Schets()
         {
@@ -18,6 +18,11 @@ namespace SchetsEditor
         {
             get { return Graphics.FromImage(bitmap); }
         }
+        public bool Saved
+        {
+            get { return saved;}
+            set { saved = value;}
+        }  
         public bool Changed         
         {
             get { return changed; }
@@ -45,7 +50,6 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
-            changed = true; 
         }
         public virtual void Schoon()
         {

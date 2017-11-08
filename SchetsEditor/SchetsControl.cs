@@ -9,6 +9,7 @@ namespace SchetsEditor
     {   private Schets schets;
         private Color penkleur;
         private int countteken, countundo;
+        
 
 
         private ArrayList tekenElementen = new ArrayList();
@@ -18,7 +19,6 @@ namespace SchetsEditor
         {
             get
             {
-                Console.WriteLine(tekenElementen.Count);
                 return tekenElementen;
             }
             set { tekenElementen = value; }
@@ -44,10 +44,12 @@ namespace SchetsEditor
         }
         private void teken(object o, PaintEventArgs pea)
         {  schets.Teken(pea.Graphics); 
-           if(tekenElementen.Count > countteken && undoElementen.Count == countundo) 
-                undoElementen.Clear();
-           if(tekenElementen.Count == 0)
-                    schets.Changed = false;
+           if(tekenElementen.Count == 0 || schets.Saved == true)
+           {
+                schets.Changed = false; schets.Saved = false;
+           }
+           else if(tekenElementen.Count > countteken && undoElementen.Count == countundo) 
+                    undoElementen.Clear(); schets.Saved = false;
            countteken = tekenElementen.Count; 
            countundo = undoElementen.Count;
         }       
@@ -62,7 +64,9 @@ namespace SchetsEditor
         }
 
         public void TekenBitmapOpnieuw()
-        {   schets.Schoon();
+        {   schets.Bitmap = new Bitmap(1,1);
+            schets.VeranderAfmeting(new Size(this.ClientSize.Width, this.ClientSize.Height ));
+            schets.Schoon();
             this.Invalidate();
             foreach (TekenElement e in tekenElementen)
             {
@@ -71,6 +75,7 @@ namespace SchetsEditor
                 else
                     (e.tool).Compleet(MaakBitmapGraphics(), e.beginPunt, e.eindPunt, e.kwast);
             }
+
             
         }
         public void Undo(object o, EventArgs ea)
