@@ -123,7 +123,7 @@ namespace SchetsEditor
         private void schrijfNaarJson()
         {
             ArrayList elementen = schetscontrol.TekenElementen;
-            StreamWriter sr= new StreamWriter(this.Tekst);
+            StreamWriter writer = new StreamWriter(this.Tekst);
             foreach(TekenElement e in elementen)
                     writer.WriteLine(e.tool.ToString() + " " + e.beginPunt.X + " " + e.beginPunt.Y + " " + e.eindPunt.X + " " + e.eindPunt.Y + " "
                         + new Pen(e.kwast).Color.A + " " + new Pen(e.kwast).Color.R + " " + new Pen(e.kwast).Color.G + " " + new Pen(e.kwast).Color.B + " " + e.c);
